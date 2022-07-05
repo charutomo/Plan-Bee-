@@ -64,7 +64,6 @@ void setup() {
      Maximum is 4
   */
   pinMode(voltagePin, INPUT);
-  pinMode(currentPin, INPUT);
 }
 
 void loop() {
