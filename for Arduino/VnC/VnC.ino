@@ -16,7 +16,6 @@
 */
 
 #define voltagePin A1
-#define currentPin 8
 #include "ACS712.h"
 float voltage;
 float current;
