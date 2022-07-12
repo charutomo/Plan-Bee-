@@ -3,9 +3,12 @@
 #include <SPI.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <DallasTemperature.h>
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
+
+#define SENSOR_PIN  21 // ESP32 pin GIOP21 connected to DS18B20 sensor's DQ pin
 
 // Declaration for SSD1306 display connected using software SPI (default case):
 #define OLED_MOSI  33
@@ -24,7 +27,14 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT,
 #define PRINT_DEC_POINTS  3         // decimal points to print
 
 // Set I2C address to 0x40 (A0 pin -> GND)
+// VC connect to 3.3V, GND to GND, SCL to GPIO 22, SDA to GPIO 21 for esp32
 Beastdevices_INA3221 ina3221(INA3221_ADDR40_GND);
+
+OneWire oneWire(SENSOR_PIN);
+DallasTemperature DS18B20(&oneWire);
+
+float tempC; // temperature in Celsius
+float tempF; // temperature in Fahrenheit
 
 static const unsigned char PROGMEM logo_bmp[] =
   {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
@@ -294,6 +304,7 @@ static const unsigned char PROGMEM logodead_bmp[] ={
 
 void setup() {
   Serial.begin(SERIAL_SPEED);
+  DS18B20.begin();
 
   if(!display.begin(SSD1306_SWITCHCAPVCC)) {
     Serial.println(F("SSD1306 allocation failed"));
@@ -307,11 +318,12 @@ void setup() {
    // Draw a small bitmap image
   textdisplay();
 
-  for (int i = 1; i <= 6; ++i) {
-        lowbatt();
-        }
+  //for (int i = 1; i <= 6; ++i) {
+  //      lowbatt();
+  //      }
         
   thanks();
+  temperature();
   while (!Serial) {
       delay(1);
   }
@@ -330,6 +342,7 @@ void loop() {
   current[0] = ina3221.getCurrent(INA3221_CH1);
   voltage[0] = ina3221.getVoltage(INA3221_CH1);
   float power1 = current[0] * voltage[0];
+  float battpercent = ((voltage[0]-3.4)/(4.3-3.4))*100;
 
   current[1] = ina3221.getCurrent(INA3221_CH2);
   voltage[1] = ina3221.getVoltage(INA3221_CH2);
@@ -354,7 +367,9 @@ void loop() {
   Serial.print("V, ");
   Serial.print(power2);
   Serial.println("W");
-
+  Serial.print(battpercent);
+  Serial.println("%");
+  
   Serial.print("Channel 3: ");
   Serial.print(current[2], PRINT_DEC_POINTS);
   Serial.print("A, ");
@@ -368,7 +383,7 @@ void loop() {
   display.setTextSize(2);
   display.setTextColor(WHITE);
   display.setCursor(0, 0);
-  display.println("Generator:");
+  display.println("At Batt:");
   display.print(current[0], PRINT_DEC_POINTS);
   display.println("A, ");
   display.print(voltage[0], PRINT_DEC_POINTS);
@@ -376,13 +391,56 @@ void loop() {
   display.print(power1);
   display.println("W");
   display.display();
-  delay(2000);
+  delay(4000);
+
+  if (battpercent<0) {
+    display.clearDisplay();
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(0, 0);
+    display.println("Please");
+    display.println("Connect");
+    display.println("To ");
+    display.println("Battery.");
+    display.display();
+    delay(2000);
+   } 
+   
+   else if(battpercent<=10){
+      for (int i = 1; i <= 6; ++i) {
+        lowbatt();
+         }
+      display.clearDisplay();
+      display.setTextSize(2);
+      display.setTextColor(WHITE);
+      display.setCursor(0, 0);
+      display.println("Battery");
+      display.println("Percent:");
+      display.print(battpercent);
+      display.println("%");
+      display.display();
+      delay(2000);
+
+   }
+
+   else{
+    display.clearDisplay();
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(0, 0);
+    display.println("Battery");
+    display.println("Percent:");
+    display.print(battpercent);
+    display.println("%");
+    display.display();
+    delay(4000);
+   }
 
   display.clearDisplay();
   display.setTextSize(2);
   display.setTextColor(WHITE);
   display.setCursor(0, 0);
-  display.println("Battery:");
+  display.println("B4 Batt:");
   display.print(current[1], PRINT_DEC_POINTS);
   display.println("A, ");
   display.print(voltage[1], PRINT_DEC_POINTS);
@@ -390,13 +448,13 @@ void loop() {
   display.print(power2);
   display.println("W");
   display.display();
-  delay(2000);
+  delay(4000);
 
   display.clearDisplay();
   display.setTextSize(2);
   display.setTextColor(WHITE);
   display.setCursor(0, 0);
-  display.println("Battery:");
+  display.println("B4 FWR:");
   display.print(current[2], PRINT_DEC_POINTS);
   display.println("A, ");
   display.print(voltage[2], PRINT_DEC_POINTS);
@@ -404,10 +462,10 @@ void loop() {
   display.print(power3);
   display.println("W");
   display.display();
-  delay(2000);
+  delay(4000);
+
+  
 }
-
-
 
 void lowbatt(void){
   display.clearDisplay();
@@ -418,6 +476,7 @@ void lowbatt(void){
   display.display();
   delay(500);
   display.clearDisplay();
+  display.display();
   delay(500);
 }
 
@@ -450,7 +509,7 @@ void textdisplay(void){
   display.setCursor(0, 0);
   display.println("Plan Bee");
   display.println("Group");
-  display.println("Members");
+  display.println("Members:");
   display.display();
   delay(2000);
   
@@ -499,3 +558,20 @@ void thanks(void){
   display.display();
   delay(2000);
   }
+
+void temperature(void){
+  DS18B20.requestTemperatures();       // send the command to get temperatures
+  tempC = DS18B20.getTempCByIndex(0);  // read temperature in °C
+  tempF = tempC * 9 / 5 + 32;
+  display.clearDisplay();
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 0);
+  display.println("Temp:");
+  display.print(tempC);
+  display.println("°C");
+  display.print(tempF);
+  display.println("°F");
+  display.display();
+  delay(2000);
+}

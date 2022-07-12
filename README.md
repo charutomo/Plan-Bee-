@@ -1,5 +1,5 @@
 # Plan-Bee-
-** Hand crank Emergency Power Bank**
+**Hand crank Emergency Power Bank**
 <br/>
 
 **Welcome!** :wave:
@@ -19,10 +19,10 @@ of an emergency hand crank power bank in fulfilment of the course PS5888: Making
 In this particular repository, it would consists the C++ codes of our functions in our power bank
 for Arduino Uno and ESP32-WROOM-32D respectively.
 <br/>
-
+<br/>
 
 ## Content Of Repository 
-Listed below are the current codes for `Plan Bee': <br/>
+Listed below are the current codes for `Plan Bee`: <br/>
 <br/>
 <details>
 	<summary>Table of Content</summary>
@@ -55,4 +55,4 @@ Currently, we use the following items for the functions: <br/>
 
 
 <br/>
-**Thank you for your support!** :blush:
+Thank you for your support! :blush:
