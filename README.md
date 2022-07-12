@@ -52,6 +52,7 @@ Currently, we use the following items for the functions: <br/>
 | :----------------:	|:--------:	|
 |Current, Voltage Sensor| INA3221	|
 |Display Screen		| SSD1306	|
+|Temperature Sensor	| DS18B20	|
 
 
 <br/>
