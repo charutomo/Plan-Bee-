@@ -77,8 +77,8 @@
 #define MADCTL_MX 0x40  ///< Right to left
 #define MADCTL_MV 0x20  ///< Reverse Mode
 #define MADCTL_ML 0x10  ///< LCD refresh Bottom to top
-#define MADCTL_RGB 0x00 ///< Red-Green-Blue pixel order
-#define MADCTL_BGR 0x08 ///< Blue-Green-Red pixel order
+#define MADCTL_RGB 0x08 ///< Red-Green-Blue pixel order
+#define MADCTL_BGR 0x00 ///< Blue-Green-Red pixel order
 #define MADCTL_MH 0x04  ///< LCD refresh right to left
 
 /**************************************************************************/
@@ -206,8 +206,8 @@ void Adafruit_ILI9341::begin(uint32_t freq) {
       delay(150);
   }
 
-  _width = ILI9341_TFTWIDTH;
-  _height = ILI9341_TFTHEIGHT;
+  _width = ILI9341_TFTHEIGHT;
+  _height = ILI9341_TFTWIDTH;
 }
 
 /**************************************************************************/
