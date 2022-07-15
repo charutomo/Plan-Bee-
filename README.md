@@ -37,8 +37,11 @@ Listed below are the current codes for `Plan Bee`: <br/>
 	* [Current, Voltage and Power Monitor](https://github.com/charutomo/Plan-Bee-/blob/main/for%20Arduino/INA3221_for_arduino_testing/INA3221_for_arduino_testing.ino)
 
 * [ESP32-WROOM-32D](https://github.com/charutomo/Plan-Bee-/blob/main/for%20ESP32)
-	* [Current, Voltage and Power Monitor with logo display](https://github.com/charutomo/Plan-Bee-/blob/main/for%20ESP32/INA3221_works/INA3221_works.ino)
+	* [for ILI9341](https://github.com/charutomo/Plan-Bee-/blob/main/for%20ESP32/for%20ILI9341)
 
+	* [for SSH1106](https://github.com/charutomo/Plan-Bee-/blob/main/for%20ESP32/for%20SH1106/SH1106)
+	
+	* [for SSD1306](https://github.com/charutomo/Plan-Bee-/blob/main/for%20ESP32/for%20SSD1306/INA3221_works)
 
 * [image](https://github.com/charutomo/Plan-Bee-/blob/main/image)
 
@@ -48,11 +51,11 @@ Listed below are the current codes for `Plan Bee`: <br/>
 ## Components
 Currently, we use the following items for the functions: <br/>
 
-|Items			| Model No. |
-| :----------------:	|:--------:	|
-|Current, Voltage Sensor| INA3221	|
-|Display Screen		| SSD1306	|
-|Temperature Sensor	| DS18B20	|
+|Items			| Model No. 1| Model No. 2| Model No. 3|
+| :----------------:	|:--------:	 |:--------:  |:--------:  |
+|Current, Voltage Sensor| INA3221	 | INA226	  | -		   |
+|Display Screen		| SSD1306	 | SSH1106	  | ILI9341	   |
+|Temperature Sensor	| DS18B20	 |	-	  |	-	   |
 
 
 <br/>

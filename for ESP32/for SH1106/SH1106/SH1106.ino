@@ -1,33 +1,23 @@
+#include <SPI.h>
 #include <Wire.h>
 #include <Beastdevices_INA3221.h>
-#include <SPI.h>
 #include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+#include <Adafruit_SH1106.h>
 #include <DallasTemperature.h>
 
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+
+#define OLED_SDA 21
+#define OLED_SCL 22
+
+Adafruit_SH1106 display(21, 22);
+
+#define LOGO_HEIGHT 64 
+#define LOGO_WIDTH  128 
+
+#define PRINT_DEC_POINTS  3   
 
 #define SENSOR_PIN  21 // ESP32 pin GPIO21 connected to DS18B20 sensor's DQ pin
 
-// Declaration for SSD1306 display connected using software SPI (default case):
-#define OLED_MOSI  33
-#define OLED_CLK   32
-#define OLED_DC    26
-#define OLED_CS    27
-#define OLED_RESET 25
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT,
-  OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
-
-#define LOGO_HEIGHT   64
-#define LOGO_WIDTH    128
-
-
-#define SERIAL_SPEED      115200    // serial baud rate
-#define PRINT_DEC_POINTS  3         // decimal points to print
-
-// Set I2C address to 0x40 (A0 pin -> GND)
-// VC connect to 3.3V, GND to GND, SCL to GPIO 22, SDA to GPIO 21 for esp32
 Beastdevices_INA3221 ina3221(INA3221_ADDR40_GND);
 
 OneWire oneWire(SENSOR_PIN);
@@ -102,7 +92,7 @@ static const unsigned char PROGMEM logo_bmp[] =
   0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
   0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
-static const unsigned char PROGMEM logo2_bmp[] ={
+  static const unsigned char PROGMEM logo2_bmp[] ={
   0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
   0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
   0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
@@ -301,38 +291,23 @@ static const unsigned char PROGMEM logodead_bmp[] ={
   0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
 
-
 void setup() {
-  Serial.begin(SERIAL_SPEED);
+  Serial.begin(115200);
   DS18B20.begin();
-
-  if(!display.begin(SSD1306_SWITCHCAPVCC)) {
-    Serial.println(F("SSD1306 allocation failed"));
-    for(;;); // Don't proceed, loop forever
-  }
-
-   for (int i = 1; i <= 4; ++i) {
+  display.begin(SH1106_SWITCHCAPVCC, 0x3C);
+  for (int i = 1; i <= 4; ++i) {
         testdrawbitmap();
         }
 
    // Draw a small bitmap image
   textdisplay();
-
-  //for (int i = 1; i <= 6; ++i) {
-  //      lowbatt();
-  //      }
-        
   thanks();
   temperature();
-  while (!Serial) {
-      delay(1);
-  }
-
   ina3221.begin();
   ina3221.reset();
 
-  // Set shunt resistors to 10 mOhm for all channels
   ina3221.setShuntRes(100, 100, 100);
+
 }
 
 void loop() {
@@ -391,8 +366,9 @@ void loop() {
   display.print(power1);
   display.println("W");
   display.display();
-  delay(4000);
+  delay(500);
 
+  /*
   if (battpercent<0) {
     display.clearDisplay();
     display.setTextSize(2);
@@ -403,7 +379,7 @@ void loop() {
     display.println("To ");
     display.println("Battery.");
     display.display();
-    delay(2000);
+    delay(1000);
    } 
    
    else if(battpercent<=10){
@@ -419,7 +395,7 @@ void loop() {
       display.print(battpercent);
       display.println("%");
       display.display();
-      delay(2000);
+      delay(1000);
 
    }
 
@@ -433,8 +409,9 @@ void loop() {
     display.print(battpercent);
     display.println("%");
     display.display();
-    delay(4000);
+    delay(1000);
    }
+   
 
   display.clearDisplay();
   display.setTextSize(2);
@@ -448,13 +425,13 @@ void loop() {
   display.print(power2);
   display.println("W");
   display.display();
-  delay(4000);
+  delay(1000);
 
   display.clearDisplay();
   display.setTextSize(2);
   display.setTextColor(WHITE);
   display.setCursor(0, 0);
-  display.println("B4 FWR:");
+  display.println("Aft FWR:");
   display.print(current[2], PRINT_DEC_POINTS);
   display.println("A, ");
   display.print(voltage[2], PRINT_DEC_POINTS);
@@ -462,8 +439,8 @@ void loop() {
   display.print(power3);
   display.println("W");
   display.display();
-  delay(4000);
-
+  delay(1000);
+  */
   
 }
 
@@ -511,7 +488,7 @@ void textdisplay(void){
   display.println("Group");
   display.println("Members:");
   display.display();
-  delay(2000);
+  delay(1000);
   
   display.clearDisplay();
   display.setTextSize(2);
@@ -521,7 +498,7 @@ void textdisplay(void){
   display.println("Jia Woei,");
   display.println("Jinghui, ");
   display.display();
-  delay(2000);
+  delay(1000);
   
   display.clearDisplay();
   display.setTextSize(2);
@@ -531,7 +508,7 @@ void textdisplay(void){
   display.println("and");
   display.println("Chermaine");
   display.display();
-  delay(2000);
+  delay(1000);
   
   
   display.clearDisplay();
@@ -542,7 +519,7 @@ void textdisplay(void){
   display.println("Tony and");
   display.println("Qi Jie");
   display.display();
-  delay(2000);
+  delay(1000);
   
 }
 
@@ -556,7 +533,7 @@ void thanks(void){
   display.println("Have a");
   display.println("Nice Day:)");
   display.display();
-  delay(2000);
+  delay(1000);
   }
 
 void temperature(void){
@@ -573,5 +550,5 @@ void temperature(void){
   display.print(tempF);
   display.println("°F");
   display.display();
-  delay(2000);
+  delay(1000);
 }
