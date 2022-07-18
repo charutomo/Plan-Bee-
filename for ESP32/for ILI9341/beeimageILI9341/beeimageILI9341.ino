@@ -19,15 +19,32 @@
 //  See also https://forum.pjrc.com/threads/35575-Export-for-ILI9341_t3-with-GIMP
 
 #include "SPI.h"
-#include <Adafruit_ILI9341.h>
+#include "Adafruit_ILI9341.h"
 #include "Bee.h"
+#include <Wire.h>
+#include <Beastdevices_INA3221.h>
+#include <SPI.h>
+#include <DallasTemperature.h>
 
-#define TFT_CLK    18
-#define TFT_MOSI   23
-#define TFT_MISO   19
-#define TFT_CS     22
-#define TFT_DC     21
-#define TFT_RST    17
+
+#define TFT_CLK    32
+#define TFT_MOSI   33
+#define TFT_MISO   12 
+#define TFT_CS     27 
+#define TFT_DC     26 
+#define TFT_RST    25 
+
+#define PRINT_DEC_POINTS  3  
+
+#define SENSOR_PIN  35 // ESP32 pin GPIO35 connected to DS18B20 sensor's DQ pin
+
+Beastdevices_INA3221 ina3221(INA3221_ADDR40_GND);
+
+OneWire oneWire(SENSOR_PIN);
+DallasTemperature DS18B20(&oneWire);
+
+float tempC; // temperature in Celsius
+float tempF; // temperature in Fahrenheit
 
 //Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 // If using the breakout, change pins as desired
@@ -35,11 +52,86 @@ Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_R
 
 void setup() {
   tft.begin();
+  DS18B20.begin();
   tft.fillScreen(ILI9341_WHITE);
+  tft.setRotation(0);
+  Serial.begin(115200);
+  tft.drawRGBBitmap(0, 0, bee, BEE_WIDTH,BEE_HEIGHT);
+  textdisplay();
+  temperature();
+
+  delay(200);
+
+  ina3221.begin();
+  ina3221.reset();
+
+  // Set shunt resistors to 10 mOhm for all channels
+  ina3221.setShuntRes(100, 100, 100);
+  
 }
 
 void loop(void) {
-  tft.setRotation(2);
-  tft.drawRGBBitmap(0, 0, bee, BEE_WIDTH,BEE_HEIGHT);
-  delay(3000);
+  float current[3];
+  float voltage[3];
+
+
+  current[0] = ina3221.getCurrent(INA3221_CH1);
+  voltage[0] = ina3221.getVoltage(INA3221_CH1);
+  float power1 = current[0] * voltage[0];
+  float battpercent = ((voltage[0]-3.4)/(4.3-3.4))*100;
+
+
+  current[1] = ina3221.getCurrent(INA3221_CH2);
+  voltage[1] = ina3221.getVoltage(INA3221_CH2);
+  float power2 = current[1] * voltage[1];
+
+  current[2] = ina3221.getCurrent(INA3221_CH3);
+  voltage[2] = ina3221.getVoltage(INA3221_CH3);
+  float power3 = current[2] * voltage[2];
+
+  tft.fillScreen(ILI9341_WHITE);
+  tft.setCursor(20, 20);
+  tft.setTextColor(ILI9341_BLACK);
+  tft.println("At Battery:");
+  tft.print(current[0], PRINT_DEC_POINTS);
+  tft.println("A, ");
+  tft.print(voltage[0], PRINT_DEC_POINTS);
+  tft.println("V, ");
+  tft.print(power1);
+  tft.println("W");
+  delay(500);
+
+}
+
+void textdisplay(void){
+  tft.fillScreen(ILI9341_WHITE);
+  tft.setCursor(20, 20);
+  tft.setTextSize(2);
+  tft.setTextColor(ILI9341_YELLOW);
+  tft.println("Plan Bee");
+  tft.setTextColor(ILI9341_BLACK);
+  tft.println("Group Members:");
+  tft.println("Andy,Jia Woei,Jinghui,");
+  tft.println("Chermaine and Charissa");
+  tft.println();
+  tft.println("With thanks to Tony and Qi");
+  tft.println("Jie");
+  delay(1000);
+  
+}
+
+void temperature(void){
+  tft.fillScreen(ILI9341_WHITE);
+  tft.setCursor(20, 20);
+  tft.setTextSize(2);
+  tft.setTextColor(ILI9341_BLACK);
+  DS18B20.requestTemperatures();       // send the command to get temperatures
+  tempC = DS18B20.getTempCByIndex(0);  // read temperature in °C
+  tempF = tempC * 9 / 5 + 32;
+  tft.println("Temperature:");
+  tft.print(tempC);
+  tft.println("°C");
+  tft.print(tempF);
+  tft.println("°F");
+  delay(1000);
 }

@@ -206,8 +206,8 @@ void Adafruit_ILI9341::begin(uint32_t freq) {
       delay(150);
   }
 
-  _width = ILI9341_TFTWIDTH;
-  _height = ILI9341_TFTHEIGHT;
+  _width = ILI9341_TFTHEIGHT;
+  _height = ILI9341_TFTWIDTH;
 }
 
 /**************************************************************************/
@@ -221,8 +221,8 @@ void Adafruit_ILI9341::setRotation(uint8_t m) {
   switch (rotation) {
   case 0:
     m = (MADCTL_MX | MADCTL_BGR);
-    _width = ILI9341_TFTHEIGHT;
-    _height = ILI9341_TFTWIDTH;
+    _width = ILI9341_TFTHEIGHT; 
+    _height = ILI9341_TFTWIDTH;	
     break;
   case 1:
     m = (MADCTL_MV | MADCTL_BGR);
@@ -236,8 +236,8 @@ void Adafruit_ILI9341::setRotation(uint8_t m) {
     break;
   case 3:
     m = (MADCTL_MX | MADCTL_MY | MADCTL_MV | MADCTL_BGR);
-    _width = ILI9341_TFTWIDTH;
-    _height = ILI9341_TFTHEIGHT;
+    _width = ILI9341_TFTHEIGHT; 
+    _height = ILI9341_TFTWIDTH; 
     break;
   }
 

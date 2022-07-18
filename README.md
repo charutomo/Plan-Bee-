@@ -9,14 +9,15 @@
 <h3 align="center">Plan Bee</h3>
 <div align="center">
   <a href="https://github.com/charutomo/Plan-Bee-">
-    <img src="image/bee.jpg" alt="bee" width="80" height="80">
+    <img src="image/bee.jpg" alt="bee" width="128" height="64">
   </a>
 </div>
 
-Andy, Jia Woei, [Jinghui](https://github.com/jhlow5), [Chermaine](https://github.com/chermainegoh) 
-and [Charissa](https://github.com/charutomo) are part of Plan Bee and we are making a prototype
-of an emergency hand crank power bank in fulfilment of the course PS5888: Making and Tinkering.
-In this particular repository, it would consists the C++ codes of our functions in our power bank
+[Andy](https://github.com/Andypek921), Jia Woei, [Jinghui](https://github.com/jhlow5), 
+[Chermaine](https://github.com/chermainegoh) and [Charissa](https://github.com/charutomo) 
+are part of Plan Bee and we are making a prototype of an emergency hand crank power bank 
+in fulfilment of the course PS5888: Making and Tinkering. In this particular repository, 
+it would consists the C & C++ codes of our functions in our power bank.
 for Arduino Uno and ESP32-WROOM-32D respectively.
 <br/>
 <br/>
