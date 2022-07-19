@@ -9,7 +9,7 @@
 <h3 align="center">Plan Bee</h3>
 <div align="center">
   <a href="https://github.com/charutomo/Plan-Bee-">
-    <img src="image/bee.jpg" alt="bee" width="128" height="64">
+    <img src="image/bee.jpg" alt="bee" width="100" height="80">
   </a>
 </div>
 

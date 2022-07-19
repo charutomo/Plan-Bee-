@@ -56,7 +56,9 @@ void setup() {
   tft.fillScreen(ILI9341_WHITE);
   tft.setRotation(0);
   Serial.begin(115200);
-  tft.drawRGBBitmap(0, 0, bee, BEE_WIDTH,BEE_HEIGHT);
+  tft.drawRGBBitmap(0, 0, Plan_Bee_Logo_ALIVE, BEE_WIDTH,BEE_HEIGHT);
+  delay(1000);
+  tft.drawRGBBitmap(0, 0, Plan_Bee_Logo_DEAD, BEE_WIDTH,BEE_HEIGHT);
   textdisplay();
   temperature();
 
@@ -92,13 +94,22 @@ void loop(void) {
   tft.fillScreen(ILI9341_WHITE);
   tft.setCursor(20, 20);
   tft.setTextColor(ILI9341_BLACK);
-  tft.println("At Battery:");
-  tft.print(current[0], PRINT_DEC_POINTS);
+  tft.println("Charging Power:");
+  tft.print(current[1], PRINT_DEC_POINTS);
   tft.println("A, ");
-  tft.print(voltage[0], PRINT_DEC_POINTS);
+  tft.print(voltage[1], PRINT_DEC_POINTS);
   tft.println("V, ");
-  tft.print(power1);
+  tft.print(power2);
   tft.println("W");
+  tft.println();
+  
+  tft.println("Battery Percentage:");
+  tft.print(battpercent);
+  tft.println("%");
+  tft.println();
+
+  
+  
   delay(500);
 
 }
