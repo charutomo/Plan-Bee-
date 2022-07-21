@@ -378,7 +378,8 @@ void loop() {
   Serial.print(power3);
   Serial.println("W");
   delay(1000);
-
+  
+  /*
   display.clearDisplay();
   display.setTextSize(2);
   display.setTextColor(WHITE);
@@ -393,7 +394,7 @@ void loop() {
   display.display();
   delay(500);
 
-  /*if (battpercent<0) {
+  if (battpercent<0) {
     display.clearDisplay();
     display.setTextSize(2);
     display.setTextColor(WHITE);
@@ -434,7 +435,7 @@ void loop() {
     display.println("%");
     display.display();
     delay(1000);
-   }
+   } */
 
   display.clearDisplay();
   display.setTextSize(2);
@@ -450,7 +451,7 @@ void loop() {
   display.display();
   delay(3000);
 
-  display.clearDisplay();
+  /*display.clearDisplay();
   display.setTextSize(2);
   display.setTextColor(WHITE);
   display.setCursor(0, 0);

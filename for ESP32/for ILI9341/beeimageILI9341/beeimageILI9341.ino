@@ -57,8 +57,7 @@ void setup() {
   tft.setRotation(0);
   Serial.begin(115200);
   tft.drawRGBBitmap(0, 0, Plan_Bee_Logo_ALIVE, BEE_WIDTH,BEE_HEIGHT);
-  delay(1000);
-  tft.drawRGBBitmap(0, 0, Plan_Bee_Logo_DEAD, BEE_WIDTH,BEE_HEIGHT);
+  delay(500);
   textdisplay();
   temperature();
 
@@ -91,8 +90,48 @@ void loop(void) {
   voltage[2] = ina3221.getVoltage(INA3221_CH3);
   float power3 = current[2] * voltage[2];
 
+  if (battpercent<0) {
+    
+    tft.fillScreen(ILI9341_WHITE);
+    tft.setCursor(0, 20);
+    tft.setTextColor(ILI9341_BLACK);
+    tft.println("Please connect to battery");
+    tft.println();
+    tft.println("Charging Power:");
+    tft.print(current[1], PRINT_DEC_POINTS);
+    tft.println("A, ");
+    tft.print(voltage[1], PRINT_DEC_POINTS);
+    tft.println("V, ");
+    tft.print(power2);
+    tft.println("W");
+  }
+
+  else if(battpercent<=10){
+    for (int i = 1; i <= 4; ++i) {
+      tft.drawRGBBitmap(0, 0, Plan_Bee_Logo_DEAD, BEE_WIDTH,BEE_HEIGHT);
+      tft.fillScreen(ILI9341_WHITE);
+    }
+    tft.fillScreen(ILI9341_WHITE);
+    tft.setCursor(0, 20);
+    tft.setTextColor(ILI9341_BLACK);
+    tft.println("Charging Power:");
+    tft.print(current[1], PRINT_DEC_POINTS);
+    tft.println("A, ");
+    tft.print(voltage[1], PRINT_DEC_POINTS);
+    tft.println("V, ");
+    tft.print(power2);
+    tft.println("W");
+    tft.println();
+    tft.println("Battery Percentage:");
+    tft.print(battpercent);
+    tft.println("%");
+    tft.println();
+    
+  }
+
+  else{
   tft.fillScreen(ILI9341_WHITE);
-  tft.setCursor(20, 20);
+  tft.setCursor(0, 20);
   tft.setTextColor(ILI9341_BLACK);
   tft.println("Charging Power:");
   tft.print(current[1], PRINT_DEC_POINTS);
@@ -107,16 +146,14 @@ void loop(void) {
   tft.print(battpercent);
   tft.println("%");
   tft.println();
-
-  
-  
-  delay(500);
+  }
+  delay(1000);
 
 }
 
 void textdisplay(void){
   tft.fillScreen(ILI9341_WHITE);
-  tft.setCursor(20, 20);
+  tft.setCursor(0, 20);
   tft.setTextSize(2);
   tft.setTextColor(ILI9341_YELLOW);
   tft.println("Plan Bee");
@@ -133,7 +170,7 @@ void textdisplay(void){
 
 void temperature(void){
   tft.fillScreen(ILI9341_WHITE);
-  tft.setCursor(20, 20);
+  tft.setCursor(0, 20);
   tft.setTextSize(2);
   tft.setTextColor(ILI9341_BLACK);
   DS18B20.requestTemperatures();       // send the command to get temperatures
