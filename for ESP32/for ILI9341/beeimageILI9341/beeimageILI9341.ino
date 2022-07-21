@@ -38,7 +38,9 @@
 
 #define SENSOR_PIN  35 // ESP32 pin GPIO35 connected to DS18B20 sensor's DQ pin
 
-Beastdevices_INA3221 ina3221(INA3221_ADDR40_GND);
+// Set I2C address to 0x40 (A0 pin -> GND)
+// VC connect to 3.3V, GND to GND, SCL to GPIO 22, SDA to GPIO 21 for esp32
+Beastdevices_INA3221 ina3221(INA3221_ADDR40_GND); 
 
 OneWire oneWire(SENSOR_PIN);
 DallasTemperature DS18B20(&oneWire);
