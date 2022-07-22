@@ -17,7 +17,7 @@
 
 #define ROTARY_ENCODER_STEPS 4
 
-int menu_state = main;
+int menu_state = 0;
 
 //instead of changing here, rather change numbers above
 AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
@@ -73,23 +73,50 @@ void setup() {
 }
 
 void loop() {
+  /* Menu values
+  0: main menu without any selector
+  1: main menu with selector on Battery Info
+  2: main menu with selector on Temperature
+  3: main menu with selector on Credits
+
+  7: Battery Info Page
+  8: Temperature Page 
+  9: Credits Page
+  */
+  case menu_state {
+    case 0:
+      menu();
+    case 1:
+      menu1();
+    case 2:
+      menu2();
+    case 3:
+      menu3();
+    case 7:
+      showbattery();
+    case 8:
+      showtemp();
+    case 9:
+      credits();
+  }
+
   if (rotaryEncoder.encoderChanged()) {
     int value = rotaryEncoder.readEncoder();
     Serial.println(value);
   if (value%3==0){
-      menu1();
+      menu_state = 1;
       if (rotaryEncoder.isEncoderButtonClicked()){
         showbattery();
       }
   }
   else if (value%3==1){
-      menu2();
+      menu_state = 2;
       if (rotaryEncoder.isEncoderButtonClicked()){
         showtemp();
       }
   }
   else{
-      menu3();
+      menu_state = 3;
       if (rotaryEncoder.isEncoderButtonClicked()){
         credits();
       }
@@ -115,21 +142,21 @@ void menu() {
 
 // menu with selector on 1
 void menu1() {
-  menu()
+  menu();
   tft.setCursor(40,40);
   tft.print("->");
 }
 
 // menu with selector on 2
 void menu2() {
-  menu()
+  menu();
   tft.setCursor(40,70);
   tft.print("->");
 }
 
 // menu with selector on 3
 void menu3() {
-  menu()
+  menu();
   tft.setCursor(40,100);
   tft.print("->");
 }
