@@ -17,6 +17,8 @@
 
 #define ROTARY_ENCODER_STEPS 4
 
+int menu_state = 0;
+
 //instead of changing here, rather change numbers above
 AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
 
@@ -126,53 +128,23 @@ void menu() {
 
 // menu with selector on 1
 void menu1() {
-  tft.fillScreen(ILI9341_WHITE);
-  tft.setRotation(0);
-  tft.setTextSize(2);
-  tft.setTextColor(ILI9341_BLACK);
+  menu()
   tft.setCursor(40,40);
   tft.print("->");
-  tft.setCursor(70,40);
-  tft.println("Battery Info");
-  tft.setCursor(70,70);
-  tft.println("Temperature");
-  tft.setCursor(70,100);
-  tft.println("Credits");
-  tft.setCursor(70,130);
 }
 
 // menu with selector on 2
-void menu2() {
-  tft.fillScreen(ILI9341_WHITE);
-  tft.setRotation(0);
-  tft.setTextSize(2);
-  tft.setTextColor(ILI9341_BLACK);
-  tft.setCursor(70,40);
-  tft.println("Battery Info");
+void menu1() {
+  menu()
   tft.setCursor(40,70);
   tft.print("->");
-  tft.setCursor(70,70);
-  tft.println("Temperature");
-  tft.setCursor(70,100);
-  tft.println("Credits");
-  tft.setCursor(70,130);
 }
 
 // menu with selector on 3
-void menu3() {
-  tft.fillScreen(ILI9341_WHITE);
-  tft.setRotation(0);
-  tft.setTextSize(2);
-  tft.setTextColor(ILI9341_BLACK);
-  tft.setCursor(70,40);
-  tft.println("Battery Info");
-  tft.setCursor(70,70);
-  tft.println("Temperature");
+void menu1() {
+  menu()
   tft.setCursor(40,100);
   tft.print("->");
-  tft.setCursor(70,100);
-  tft.println("Credits");
-  tft.setCursor(70,130);
 }
 
 // show the battery value
