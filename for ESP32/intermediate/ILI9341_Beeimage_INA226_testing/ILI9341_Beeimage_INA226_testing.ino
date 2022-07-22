@@ -28,6 +28,16 @@
 #define I2C_ADDRESS0 0x40 //battery channel: measure battery percentage
 #define 12C_ADDRESS1 0X41 //charging channel: measure charging voltage and current
 
+/*For connecting ESP32 to INA226:
+ * VCC --> 3V3
+ * GND --> GND
+ * SDA --> PIN 21
+ * SCL --> PIN 22
+ * ALE --> PIN 25
+ * VBUS and IN- --> negative terminal / VCC of load
+ * IN+ --> Positive terminal of power supply
+ */
+ 
 /* For ILI9341: 
  * VCC --> 5V
  * GND --> GND 
