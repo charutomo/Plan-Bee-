@@ -5,6 +5,7 @@
 #include <Wire.h>
 #include <Beastdevices_INA3221.h>
 #include <SPI.h>
+#include <OneWire.h>
 #include <DallasTemperature.h>
 
 #define TFT_CLK 32
@@ -16,7 +17,7 @@
 
 #define PRINT_DEC_POINTS  3  
 
-#define SENSOR_PIN  35
+#define SENSOR_PIN  0
 
 #define ROTARY_ENCODER_A_PIN 14
 #define ROTARY_ENCODER_B_PIN 17
@@ -102,6 +103,10 @@ void loop() {
       menu_state = 9;
     } 
     changemenu();
+  }
+  if (menu_state>5){
+    changemenu();
+    delay(1000);
   }
 }
 
@@ -199,11 +204,11 @@ void showbattery(void) {
   voltage[1] = ina3221.getVoltage(INA3221_CH2);
   float power2 = current[1] * voltage[1];
   tft.println("Charging Power:");
-  tft.print(current[1], PRINT_DEC_POINTS);
+  tft.print(current[0], PRINT_DEC_POINTS);
   tft.println("A, ");
-  tft.print(voltage[1], PRINT_DEC_POINTS);
+  tft.print(voltage[0], PRINT_DEC_POINTS);
   tft.println("V, ");
-  tft.print(power2);
+  tft.print(power1);
   tft.println("W");
   tft.println();
   
@@ -220,15 +225,22 @@ void showtemp(void) {
   tft.setCursor(0,0);
   tft.setTextColor(ILI9341_BLACK);
   tft.println("Temperature");
-  tft.setTextSize(2);
+  tft.setTextSize(1);
   tft.println();
   DS18B20.requestTemperatures();       
   tempC = DS18B20.getTempCByIndex(0);  
   tempF = tempC * 9 / 5 + 32;
+  tft.setCursor(65,50);
+  tft.println("o");
+  tft.setTextSize(2);
   tft.print(tempC);
-  tft.println("°C");
+  tft.println(" C");
+  tft.setCursor(65,80);
+  tft.setTextSize(1);
+  tft.println("o");
+  tft.setTextSize(2);
   tft.print(tempF);
-  tft.println("°F");
+  tft.println(" F");
 }
 
 // show the credits
