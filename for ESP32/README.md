@@ -13,7 +13,7 @@ Above shows the pinout of ESP32-WROOM-32D.
 <br/>
 
 ## List of Pins
-Listed below are the current pins occupied for `Plan Bee`: <br/>
+Listed below are the current pins occupied for `Plan Bee`: 
 <br/>
 ILI9341 Display
 <br/>
@@ -46,13 +46,12 @@ This is for the 1.3 inch ILI9341 Display.
 <br/>
 <br/>
 
-
-SSD1306
+SSD1306 Display
 <br/>
-|SSD1306		|Type of Pin on ESP32	    |
-|:---------------:	|:--------:	 	    |
+|SSD1306 Display	|Type of Pin on ESP32 |
+| :-------------:	|:--------:		    |
 |GND			|GND       		    |
-|VCC			|3v3	 	          |
+|VCC			|3v3	 	           |
 |D0			|32	     		    |
 |D1			|33			    |
 |RESET			|25		     	    |
@@ -67,10 +66,10 @@ This is for the 0.96 inch ILI9341 Display.
 Temperature Sensor DS18B20
 <br/>
 |DS18B20		|Type of Pin on ESP32 |
-| :------------:	|:--------:	 |
-|VCC			|5V	 	 |
-|DQ			|0	       |
-|GND			|GND       	 |
+| :--------------:	|:--------:		    	|
+|VCC			|5V	 	         	 |
+|DQ			|0		      		 |
+|GND			|GND       		    	|
 <br/>
 
 
@@ -84,18 +83,18 @@ INA3221 Current and Voltage Sensor
 |SDA			|21			    |
 <br/>
 
-
 INA226 Current and Voltage Sensor
 <br/>
 |INA226		|Type of Pin on ESP32 |
-| :------------:	|:--------:		    |
+| :--------------:|:--------:		    |
 |VCC			|3v3	 	          |
 |GND			|GND       		    |
-|SDA			|21			    |
-|SCL			|22	     		    |
-|ALERT		|25 *intercept	    |
+|SDA			|22	     		    |
+|SCL			|21			    |
+|ALERT			|25			    |
 <br/>
-<br/>
+
+
 
 
 
