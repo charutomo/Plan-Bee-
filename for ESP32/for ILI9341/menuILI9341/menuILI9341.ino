@@ -2,6 +2,10 @@
 #include "Adafruit_ILI9341.h"
 #include "AiEsp32RotaryEncoder.h"
 #include "Arduino.h"
+#include <Wire.h>
+#include <Beastdevices_INA3221.h>
+#include <SPI.h>
+#include <DallasTemperature.h>
 
 #define TFT_CLK 32
 #define TFT_MOSI 33
@@ -9,6 +13,10 @@
 #define TFT_CS 27
 #define TFT_DC 26
 #define TFT_RST 25
+
+#define PRINT_DEC_POINTS  3  
+
+#define SENSOR_PIN  35
 
 #define ROTARY_ENCODER_A_PIN 14
 #define ROTARY_ENCODER_B_PIN 17
@@ -19,6 +27,14 @@
 
 int menu_state = 0;
 int value = 0;
+
+Beastdevices_INA3221 ina3221(INA3221_ADDR40_GND); 
+
+OneWire oneWire(SENSOR_PIN);
+DallasTemperature DS18B20(&oneWire);
+
+float tempC; // temperature in Celsius
+float tempF; // temperature in Fahrenheit
 
 //instead of changing here, rather change numbers above
 AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
@@ -52,9 +68,13 @@ void setup() {
 
   // initalise the screen
   tft.begin();
+  DS18B20.begin();
   tft.fillScreen(ILI9341_WHITE);
   tft.setRotation(0);
-
+  
+  ina3221.begin();
+  ina3221.reset();
+  ina3221.setShuntRes(100, 100, 100);
   // start the main menu
   menu();
 }
@@ -160,23 +180,71 @@ void menu3() {
 // show the battery value
 void showbattery(void) {
   tft.fillScreen(ILI9341_WHITE);
-  tft.setTextSize(2);
+  tft.setTextSize(3);
+  tft.setCursor(0,0);
   tft.setTextColor(ILI9341_BLACK);
   tft.println("Battery");
+  tft.setTextSize(2);
+  tft.println();
+
+  float current[3];
+  float voltage[3];
+
+  current[0] = ina3221.getCurrent(INA3221_CH1);
+  voltage[0] = ina3221.getVoltage(INA3221_CH1);
+  float power1 = current[0] * voltage[0];
+  float battpercent = ((voltage[0]-3.4)/(4.3-3.4))*100;
+
+  current[1] = ina3221.getCurrent(INA3221_CH2);
+  voltage[1] = ina3221.getVoltage(INA3221_CH2);
+  float power2 = current[1] * voltage[1];
+  tft.println("Charging Power:");
+  tft.print(current[1], PRINT_DEC_POINTS);
+  tft.println("A, ");
+  tft.print(voltage[1], PRINT_DEC_POINTS);
+  tft.println("V, ");
+  tft.print(power2);
+  tft.println("W");
+  tft.println();
+  
+  tft.println("Battery Percentage:");
+  tft.print(battpercent);
+  tft.println("%");
+  tft.println();
 }
 
 // show the temperature
 void showtemp(void) {
   tft.fillScreen(ILI9341_WHITE);
-  tft.setTextSize(2);
+  tft.setTextSize(3);
+  tft.setCursor(0,0);
   tft.setTextColor(ILI9341_BLACK);
   tft.println("Temperature");
+  tft.setTextSize(2);
+  tft.println();
+  DS18B20.requestTemperatures();       
+  tempC = DS18B20.getTempCByIndex(0);  
+  tempF = tempC * 9 / 5 + 32;
+  tft.print(tempC);
+  tft.println("°C");
+  tft.print(tempF);
+  tft.println("°F");
 }
 
 // show the credits
 void credits(void) {
   tft.fillScreen(ILI9341_WHITE);
-  tft.setTextSize(2);
+  tft.setTextSize(3);
+  tft.setCursor(0,0);
   tft.setTextColor(ILI9341_BLACK);
   tft.println("Credits");
+  tft.setTextSize(2);
+  tft.println();
+  tft.println("Group Members:");
+  tft.println("Andy,Jia Woei,Jinghui,");
+  tft.println("Chermaine and Charissa");
+  tft.println();
+  tft.println("With thanks to Tony and Qi");
+  tft.println("Jie");
+  
 }
