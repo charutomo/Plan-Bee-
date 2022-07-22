@@ -73,6 +73,33 @@ void setup() {
 }
 
 void loop() {
+  if (rotaryEncoder.encoderChanged()) {
+    int value = rotaryEncoder.readEncoder();
+    Serial.println(value);
+  if (value%3==0){
+      menu_state = 1;
+      if (rotaryEncoder.isEncoderButtonClicked()){
+        menu_state = 7;
+      }
+  }
+  else if (value%3==1){
+      menu_state = 2;
+      if (rotaryEncoder.isEncoderButtonClicked()){
+        menu_state = 8;
+      }
+  }
+  else{
+      menu_state = 3;
+      if (rotaryEncoder.isEncoderButtonClicked()){
+        menu_state = 9;
+      }
+  changemenu();
+  }
+
+  }
+}
+
+void changemenu(){
   /* Menu values
   0: main menu without any selector
   1: main menu with selector on Battery Info
@@ -83,45 +110,28 @@ void loop() {
   8: Temperature Page 
   9: Credits Page
   */
-  case menu_state {
+    case menu_state {
     case 0:
       menu();
+      break
     case 1:
       menu1();
+      break
     case 2:
       menu2();
+      break
     case 3:
       menu3();
+      break
     case 7:
       showbattery();
+      break
     case 8:
       showtemp();
+      break
     case 9:
       credits();
-  }
-
-  if (rotaryEncoder.encoderChanged()) {
-    int value = rotaryEncoder.readEncoder();
-    Serial.println(value);
-  if (value%3==0){
-      menu_state = 1;
-      if (rotaryEncoder.isEncoderButtonClicked()){
-        showbattery();
-      }
-  }
-  else if (value%3==1){
-      menu_state = 2;
-      if (rotaryEncoder.isEncoderButtonClicked()){
-        showtemp();
-      }
-  }
-  else{
-      menu_state = 3;
-      if (rotaryEncoder.isEncoderButtonClicked()){
-        credits();
-      }
-  }
-
+      break
   }
 }
 
