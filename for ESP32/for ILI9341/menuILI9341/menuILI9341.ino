@@ -10,20 +10,11 @@
 #define TFT_DC     26 
 #define TFT_RST    25 
 
-#if defined(ESP8266)
-#define ROTARY_ENCODER_A_PIN D6
-#define ROTARY_ENCODER_B_PIN D5
-#define ROTARY_ENCODER_BUTTON_PIN D7
-#else
 #define ROTARY_ENCODER_A_PIN 14
 #define ROTARY_ENCODER_B_PIN 17
 #define ROTARY_ENCODER_BUTTON_PIN 16
-#endif
 #define ROTARY_ENCODER_VCC_PIN -1 /* 27 put -1 of Rotary encoder Vcc is connected directly to 3,3V; else you can use declared output pin for powering rotary encoder */
 
-//depending on your encoder - try 1,2 or 4 to get expected behaviour
-//#define ROTARY_ENCODER_STEPS 1
-//#define ROTARY_ENCODER_STEPS 2
 #define ROTARY_ENCODER_STEPS 4
 
 //instead of changing here, rather change numbers above
@@ -82,16 +73,17 @@ void setup() {
    */
   //rotaryEncoder.disableAcceleration(); //acceleration is now enabled by default - disable if you dont need it
   rotaryEncoder.setAcceleration(250); //or set the value - larger number = more accelearation; 0 or 1 means disabled acceleration
+
+  // initalise the screen
   tft.begin();
   tft.fillScreen(ILI9341_WHITE);
   tft.setRotation(0);
+
+  // start the main menu
   menu();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  //rotary_loop();
-  
   if (rotaryEncoder.encoderChanged()) {
     int value = rotaryEncoder.readEncoder();
     Serial.println(value);
@@ -117,6 +109,7 @@ void loop() {
   }
 }
 
+// menu with no selector
 void menu() {
   tft.fillScreen(ILI9341_WHITE);
   tft.setRotation(0);
@@ -131,6 +124,7 @@ void menu() {
   tft.setCursor(70,130);
 }
 
+// menu with selector on 1
 void menu1() {
   tft.fillScreen(ILI9341_WHITE);
   tft.setRotation(0);
@@ -147,7 +141,7 @@ void menu1() {
   tft.setCursor(70,130);
 }
 
-
+// menu with selector on 2
 void menu2() {
   tft.fillScreen(ILI9341_WHITE);
   tft.setRotation(0);
@@ -164,6 +158,7 @@ void menu2() {
   tft.setCursor(70,130);
 }
 
+// menu with selector on 3
 void menu3() {
   tft.fillScreen(ILI9341_WHITE);
   tft.setRotation(0);
@@ -180,6 +175,7 @@ void menu3() {
   tft.setCursor(70,130);
 }
 
+// show the battery value
 void showbattery(void){
   tft.fillScreen(ILI9341_WHITE);
   tft.setTextSize(2);
@@ -187,6 +183,7 @@ void showbattery(void){
   tft.println("Battery");
 }
 
+// show the temperature
 void showtemp(void){
   tft.fillScreen(ILI9341_WHITE);
   tft.setTextSize(2);
@@ -194,6 +191,7 @@ void showtemp(void){
   tft.println("Temperature");
 }
 
+// show the credits
 void credits(void){
   tft.fillScreen(ILI9341_WHITE);
   tft.setTextSize(2);
