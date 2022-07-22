@@ -31,8 +31,8 @@ ILI9341 Display
 <br/>
 This is for the 2.4 inch ILI9341 Display.
 <br/>
-
 <br/>
+
 SSH1106
 <br/>
 |SSH1106		|Type of Pin on ESP32 	|
@@ -44,24 +44,26 @@ SSH1106
 <br/>
 This is for the 1.3 inch ILI9341 Display.
 <br/>
-
 <br/>
+
+
 SSD1306
 <br/>
 |SSD1306		|Type of Pin on ESP32	    |
 |:---------------:	|:--------:	 	    |
-|GND		|GND       		    |
-|VCC		|3v3	 	          |
-|D0		|32	     		    |
-|D1		|33			    |
-|RESET	|25		     	    |
-|DC		|26			    |
-|CS		|27			    |
+|GND			|GND       		    |
+|VCC			|3v3	 	          |
+|D0			|32	     		    |
+|D1			|33			    |
+|RESET			|25		     	    |
+|DC			|26			    |
+|CS			|27			    |
 <br/>
 This is for the 0.96 inch ILI9341 Display.
 <br/>
-
 <br/>
+
+
 Temperature Sensor DS18B20
 <br/>
 |DS18B20		|Type of Pin on ESP32 |
@@ -71,7 +73,7 @@ Temperature Sensor DS18B20
 |GND			|GND       	 |
 <br/>
 
-<br/>
+
 INA3221 Current and Voltage Sensor
 <br/>
 |INA3221		|Type of Pin on ESP32 |
@@ -82,7 +84,7 @@ INA3221 Current and Voltage Sensor
 |SDA			|21			    |
 <br/>
 
-<br/>
+
 INA226 Current and Voltage Sensor
 <br/>
 |INA226		|Type of Pin on ESP32 |
@@ -93,5 +95,7 @@ INA226 Current and Voltage Sensor
 |SCL			|22	     		    |
 |ALERT		|25 *intercept	    |
 <br/>
+<br/>
+
 
 
