@@ -36,6 +36,8 @@
  * ALE --> PIN 25
  * VBUS and IN- --> negative terminal / VCC of load
  * IN+ --> Positive terminal of power supply
+ * 
+ * Negative terminal of power supply --> GND of ESP32 and load
  */
  
 /* For ILI9341: 
