@@ -36,7 +36,7 @@
 
 #define PRINT_DEC_POINTS  3  
 
-#define SENSOR_PIN  35 // ESP32 pin GPIO35 connected to DS18B20 sensor's DQ pin
+#define SENSOR_PIN  0 // ESP32 pin GPIO35 connected to DS18B20 sensor's DQ pin
 
 // Set I2C address to 0x40 (A0 pin -> GND)
 // VC connect to 3.3V, GND to GND, SCL to GPIO 22, SDA to GPIO 21 for esp32
