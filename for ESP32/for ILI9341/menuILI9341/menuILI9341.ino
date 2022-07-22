@@ -3,53 +3,29 @@
 #include "AiEsp32RotaryEncoder.h"
 #include "Arduino.h"
 
-#define TFT_CLK    32
-#define TFT_MOSI   33
-#define TFT_MISO   12 
-#define TFT_CS     27 
-#define TFT_DC     26 
-#define TFT_RST    25 
+#define TFT_CLK 32
+#define TFT_MOSI 33
+#define TFT_MISO 12
+#define TFT_CS 27
+#define TFT_DC 26
+#define TFT_RST 25
 
 #define ROTARY_ENCODER_A_PIN 14
 #define ROTARY_ENCODER_B_PIN 17
 #define ROTARY_ENCODER_BUTTON_PIN 16
-#define ROTARY_ENCODER_VCC_PIN -1 /* 27 put -1 of Rotary encoder Vcc is connected directly to 3,3V; else you can use declared output pin for powering rotary encoder */
+#define ROTARY_ENCODER_VCC_PIN - 1 /* 27 put -1 of Rotary encoder Vcc is connected directly to 3,3V; else you can use declared output pin for powering rotary encoder */
 
 #define ROTARY_ENCODER_STEPS 4
+
+int menu_state = 0;
+int value = 0;
 
 //instead of changing here, rather change numbers above
 AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
 
-void rotary_onButtonClick() {
-  static unsigned long lastTimePressed = 0;
-  //ignore multiple press in that time milliseconds
-  if (millis() - lastTimePressed < 500)
-  {
-    return;
-  }
-  lastTimePressed = millis();
-  Serial.print("button pressed ");
-  Serial.print(millis());
-  Serial.println(" milliseconds after restart");
-}
-
-void rotary_loop() {
-  //dont print anything unless value changed
-  if (rotaryEncoder.encoderChanged())
-  {
-    Serial.print("Value: ");
-    Serial.println(rotaryEncoder.readEncoder());
-  }
-  if (rotaryEncoder.isEncoderButtonClicked())
-  {
-    rotary_onButtonClick();
-  }
-}
-
-void IRAM_ATTR readEncoderISR()
-{
+void IRAM_ATTR readEncoderISR() {
   rotaryEncoder.readEncoder_ISR();
 }
 
@@ -85,27 +61,64 @@ void setup() {
 
 void loop() {
   if (rotaryEncoder.encoderChanged()) {
-    int value = rotaryEncoder.readEncoder();
+    value = rotaryEncoder.readEncoder();
     Serial.println(value);
-  if (value%3==0){
-      menu1();
-      if (rotaryEncoder.isEncoderButtonClicked()){
-        showbattery();
-      }
+    if (value % 3 == 0) {
+      menu_state = 1;
+    } else if (value % 3 == 1) {
+      menu_state = 2;
+    } else if (value % 3 == 2) {
+      menu_state = 3;
+    }
+    changemenu();
   }
-  else if (value%3==1){
-      menu2();
-      if (rotaryEncoder.isEncoderButtonClicked()){
-        showtemp();
-      }
+  if (rotaryEncoder.isEncoderButtonClicked()) {
+    Serial.print("value is:");
+    Serial.print(value);
+    if (value % 3 == 0) {
+      menu_state = 7;
+    } else if (value % 3 == 1) {
+      menu_state = 8;
+    } else if (value % 3 == 2) {
+      menu_state = 9;
+    }
+    changemenu();
   }
-  else{
-      menu3();
-      if (rotaryEncoder.isEncoderButtonClicked()){
-        credits();
-      }
-  }
+}
 
+void changemenu() {
+  /* Menu values
+  0: main menu without any selector
+  1: main menu with selector on Battery Info
+  2: main menu with selector on Temperature
+  3: main menu with selector on Credits
+
+  7: Battery Info Page
+  8: Temperature Page 
+  9: Credits Page
+  */
+  switch (menu_state) {
+  case 0:
+    menu();
+    break;
+  case 1:
+    menu1();
+    break;
+  case 2:
+    menu2();
+    break;
+  case 3:
+    menu3();
+    break;
+  case 7:
+    showbattery();
+    break;
+  case 8:
+    showtemp();
+    break;
+  case 9:
+    credits();
+    break;
   }
 }
 
@@ -115,68 +128,38 @@ void menu() {
   tft.setRotation(0);
   tft.setTextSize(2);
   tft.setTextColor(ILI9341_BLACK);
-  tft.setCursor(70,40);
+  tft.setCursor(70, 40);
   tft.println("Battery Info");
-  tft.setCursor(70,70);
+  tft.setCursor(70, 70);
   tft.println("Temperature");
-  tft.setCursor(70,100);
+  tft.setCursor(70, 100);
   tft.println("Credits");
-  tft.setCursor(70,130);
+  tft.setCursor(70, 130);
 }
 
 // menu with selector on 1
 void menu1() {
-  tft.fillScreen(ILI9341_WHITE);
-  tft.setRotation(0);
-  tft.setTextSize(2);
-  tft.setTextColor(ILI9341_BLACK);
-  tft.setCursor(40,40);
+  menu();
+  tft.setCursor(40, 40);
   tft.print("->");
-  tft.setCursor(70,40);
-  tft.println("Battery Info");
-  tft.setCursor(70,70);
-  tft.println("Temperature");
-  tft.setCursor(70,100);
-  tft.println("Credits");
-  tft.setCursor(70,130);
 }
 
 // menu with selector on 2
 void menu2() {
-  tft.fillScreen(ILI9341_WHITE);
-  tft.setRotation(0);
-  tft.setTextSize(2);
-  tft.setTextColor(ILI9341_BLACK);
-  tft.setCursor(70,40);
-  tft.println("Battery Info");
-  tft.setCursor(40,70);
+  menu();
+  tft.setCursor(40, 70);
   tft.print("->");
-  tft.setCursor(70,70);
-  tft.println("Temperature");
-  tft.setCursor(70,100);
-  tft.println("Credits");
-  tft.setCursor(70,130);
 }
 
 // menu with selector on 3
 void menu3() {
-  tft.fillScreen(ILI9341_WHITE);
-  tft.setRotation(0);
-  tft.setTextSize(2);
-  tft.setTextColor(ILI9341_BLACK);
-  tft.setCursor(70,40);
-  tft.println("Battery Info");
-  tft.setCursor(70,70);
-  tft.println("Temperature");
-  tft.setCursor(40,100);
+  menu();
+  tft.setCursor(40, 100);
   tft.print("->");
-  tft.setCursor(70,100);
-  tft.println("Credits");
-  tft.setCursor(70,130);
 }
 
 // show the battery value
-void showbattery(void){
+void showbattery(void) {
   tft.fillScreen(ILI9341_WHITE);
   tft.setTextSize(2);
   tft.setTextColor(ILI9341_BLACK);
@@ -184,7 +167,7 @@ void showbattery(void){
 }
 
 // show the temperature
-void showtemp(void){
+void showtemp(void) {
   tft.fillScreen(ILI9341_WHITE);
   tft.setTextSize(2);
   tft.setTextColor(ILI9341_BLACK);
@@ -192,7 +175,7 @@ void showtemp(void){
 }
 
 // show the credits
-void credits(void){
+void credits(void) {
   tft.fillScreen(ILI9341_WHITE);
   tft.setTextSize(2);
   tft.setTextColor(ILI9341_BLACK);
