@@ -37,24 +37,6 @@ void rotary_onButtonClick() {
   Serial.println(" milliseconds after restart");
 }
 
-void rotary_loop() {
-  //dont print anything unless value changed
-  if (rotaryEncoder.encoderChanged())
-  {
-    Serial.print("Value: ");
-    Serial.println(rotaryEncoder.readEncoder());
-  }
-  if (rotaryEncoder.isEncoderButtonClicked())
-  {
-    rotary_onButtonClick();
-  }
-}
-
-void IRAM_ATTR readEncoderISR()
-{
-  rotaryEncoder.readEncoder_ISR();
-}
-
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
@@ -134,14 +116,14 @@ void menu1() {
 }
 
 // menu with selector on 2
-void menu1() {
+void menu2() {
   menu()
   tft.setCursor(40,70);
   tft.print("->");
 }
 
 // menu with selector on 3
-void menu1() {
+void menu3() {
   menu()
   tft.setCursor(40,100);
   tft.print("->");
