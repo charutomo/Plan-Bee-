@@ -15,8 +15,8 @@ Above shows the pinout of ESP32-WROOM-32D.
 ## List of Pins
 Listed below are the current pins occupied for `Plan Bee`: <br/>
 <br/>
-<details>
-	<summary>ILI9341 Display</summary>
+ILI9341 Display
+<br/>
 |ILI9341 Display	|Type of Pin on ESP32 |
 | :-------------:	|:--------:		    |
 |MISO			|12	 	          |
@@ -30,10 +30,11 @@ Listed below are the current pins occupied for `Plan Bee`: <br/>
 |VCC			|3v3	       	    |
 <br/>
 This is for the 2.4 inch ILI9341 Display.
-</details>
+<br/>
+<br/>
 
-<details>
-<summary>SSH1106</summary>
+SSH1106
+<br/>
 |SSH1106		|Type of Pin on ESP32 	|
 |:---------------:|:--------:	 	|
 |GND		|GND       		|
@@ -42,10 +43,11 @@ This is for the 2.4 inch ILI9341 Display.
 |SDA		|21			|
 <br/>
 This is for the 1.3 inch ILI9341 Display.
-</details>
+<br/>
 
-<details>
-<summary>SSD1306</summary>
+<br/>
+SSD1306
+<br/>
 |SSD1306		|Type of Pin on ESP32	    |
 |:---------------:	|:--------:	 	    |
 |GND		|GND       		    |
@@ -57,20 +59,21 @@ This is for the 1.3 inch ILI9341 Display.
 |CS		|27			    |
 <br/>
 This is for the 0.96 inch ILI9341 Display.
-</details>
+<br/>
 
-<details>
-	<summary>Temperature Sensor DS18B20</summary>
+<br/>
+Temperature Sensor DS18B20
+<br/>
 |DS18B20		|Type of Pin on ESP32 |
 | :------------:	|:--------:	 |
 |VCC			|5V	 	 |
 |DQ			|0	       |
 |GND			|GND       	 |
 <br/>
-</details>
+<br/>
 
-<details>
-<summary>INA3221 Current and Voltage Sensor</summary>
+INA3221 Current and Voltage Sensor
+<br/>
 |INA3221		|Type of Pin on ESP32 |
 | :--------------:|:--------:		    |
 |VCC			|3v3	 	          |
@@ -78,10 +81,9 @@ This is for the 0.96 inch ILI9341 Display.
 |SCL			|22	     		    |
 |SDA			|21			    |
 <br/>
-</details>
-
-<details>
-<summary>INA226 Current and Voltage Sensor</summary>
+<br/>
+INA226 Current and Voltage Sensor
+<br/>
 |INA226		|Type of Pin on ESP32 |
 | :------------:	|:--------:		    |
 |VCC			|3v3	 	          |
@@ -90,9 +92,6 @@ This is for the 0.96 inch ILI9341 Display.
 |SCL			|22	     		    |
 |ALERT		|25 *intercept	    |
 <br/>
-</details>
-
-
 <br/>
 
 
