@@ -113,25 +113,25 @@ void changemenu(){
     switch (menu_state) {
       case 0:
         menu();
-        break
+        break;
       case 1:
         menu1();
-        break
+        break;
       case 2:
         menu2();
-        break
+        break;
       case 3:
         menu3();
-        break
+        break;
       case 7:
         showbattery();
-        break
+        break;
       case 8:
         showtemp();
-        break
+        break;
       case 9:
         credits();
-        break
+        break;
   }
 }
 
