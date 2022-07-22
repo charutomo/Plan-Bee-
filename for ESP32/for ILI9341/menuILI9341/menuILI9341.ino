@@ -139,21 +139,24 @@ void menu() {
 
 // menu with selector on 1
 void menu1() {
-  menu();
+  //menu();
+  tft.fillRect(40,40,30,100, ILI9341_WHITE);
   tft.setCursor(40, 40);
   tft.print("->");
 }
 
 // menu with selector on 2
 void menu2() {
-  menu();
+  //menu();
+  tft.fillRect(40,40,30,100, ILI9341_WHITE);
   tft.setCursor(40, 70);
   tft.print("->");
 }
 
 // menu with selector on 3
 void menu3() {
-  menu();
+  //menu();
+  tft.fillRect(40,40,30,100, ILI9341_WHITE);
   tft.setCursor(40, 100);
   tft.print("->");
 }
