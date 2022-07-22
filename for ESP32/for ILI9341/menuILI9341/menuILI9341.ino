@@ -110,28 +110,28 @@ void changemenu(){
   8: Temperature Page 
   9: Credits Page
   */
-    case menu_state {
-    case 0:
-      menu();
-      break
-    case 1:
-      menu1();
-      break
-    case 2:
-      menu2();
-      break
-    case 3:
-      menu3();
-      break
-    case 7:
-      showbattery();
-      break
-    case 8:
-      showtemp();
-      break
-    case 9:
-      credits();
-      break
+    switch (menu_state) {
+      case 0:
+        menu();
+        break
+      case 1:
+        menu1();
+        break
+      case 2:
+        menu2();
+        break
+      case 3:
+        menu3();
+        break
+      case 7:
+        showbattery();
+        break
+      case 8:
+        showtemp();
+        break
+      case 9:
+        credits();
+        break
   }
 }
 
