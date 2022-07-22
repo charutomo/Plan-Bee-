@@ -60,9 +60,8 @@ void setup() {
 }
 
 void loop() {
-  if (rotaryEncoder.encoderChanged()) {
+  if (rotaryEncoder.encoderChanged() && menu_state < 5) {
     value = rotaryEncoder.readEncoder();
-    Serial.println(value);
     if (value % 3 == 0) {
       menu_state = 1;
     } else if (value % 3 == 1) {
@@ -73,15 +72,15 @@ void loop() {
     changemenu();
   }
   if (rotaryEncoder.isEncoderButtonClicked()) {
-    Serial.print("value is:");
-    Serial.print(value);
-    if (value % 3 == 0) {
+    if (menu_state >= 5){
+      menu_state = 0;
+    } else if (value % 3 == 0) {
       menu_state = 7;
     } else if (value % 3 == 1) {
       menu_state = 8;
     } else if (value % 3 == 2) {
       menu_state = 9;
-    }
+    } 
     changemenu();
   }
 }
@@ -139,7 +138,6 @@ void menu() {
 
 // menu with selector on 1
 void menu1() {
-  //menu();
   tft.fillRect(40,40,30,100, ILI9341_WHITE);
   tft.setCursor(40, 40);
   tft.print("->");
@@ -147,7 +145,6 @@ void menu1() {
 
 // menu with selector on 2
 void menu2() {
-  //menu();
   tft.fillRect(40,40,30,100, ILI9341_WHITE);
   tft.setCursor(40, 70);
   tft.print("->");
@@ -155,7 +152,6 @@ void menu2() {
 
 // menu with selector on 3
 void menu3() {
-  //menu();
   tft.fillRect(40,40,30,100, ILI9341_WHITE);
   tft.setCursor(40, 100);
   tft.print("->");
