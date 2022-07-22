@@ -17,7 +17,7 @@
 
 #define ROTARY_ENCODER_STEPS 4
 
-int menu_state = 0;
+int menu_state = main;
 
 //instead of changing here, rather change numbers above
 AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
@@ -35,6 +35,11 @@ void rotary_onButtonClick() {
   Serial.print("button pressed ");
   Serial.print(millis());
   Serial.println(" milliseconds after restart");
+}
+
+void IRAM_ATTR readEncoderISR()
+{
+  rotaryEncoder.readEncoder_ISR();
 }
 
 void setup() {
