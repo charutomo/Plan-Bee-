@@ -1,12 +1,12 @@
-# ESP32 Pinout for Plan Bee
+# ESP32 Pinout connected to ILI9341 & INA3221
 <br/>
 
 
 ## Pinout
-<h3 align="center">Plan Bee</h3>
+<h3 align="center">Pinout For ESP32-WROOM-32D</h3>
 <div align="center">
   <a href="https://github.com/charutomo/Plan-Bee-">
-    <img src="image/pinout.jpg" alt="pinout" width="786" height="333">
+    <img src="https://github.com/charutomo/Plan-Bee-/blob/main/image/pinout.jpg" alt="pinout" width="786" height="333">
   </a>
 </div>
 Above shows the pinout of ESP32-WROOM-32D.
@@ -55,8 +55,20 @@ INA3221 Current and Voltage Sensor
 <br/>
 
 
+HW040 Encoder
+<br/>
+|HW040		|Type of Pin on ESP32 |
+| :--------------:|:--------:		    |
+|CLK			|14	 	          |
+|DT			|17       		    |
+|SW			|16	     		    |
+|+			|3v3			    |
+|GND			|GND			    |
+<br/>
 
 
 
 
 
+
+		
