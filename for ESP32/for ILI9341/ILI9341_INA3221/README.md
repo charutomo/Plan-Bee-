@@ -1,9 +1,9 @@
-# ESP32 Pinout for Plan Bee
+# ESP32 Pinout connected to ILI9341 & INA3221
 <br/>
 
 
 ## Pinout
-<h3 align="center">Plan Bee</h3>
+<h3 align="center">Pinout For ESP32-WROOM-32D</h3>
 <div align="center">
   <a href="https://github.com/charutomo/Plan-Bee-">
     <img src="https://github.com/charutomo/Plan-Bee-/blob/main/image/pinout.jpg" alt="pinout" width="786" height="333">
