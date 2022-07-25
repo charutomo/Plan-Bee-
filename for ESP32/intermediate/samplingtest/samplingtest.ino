@@ -18,8 +18,9 @@ Beastdevices_INA3221 ina3221(INA3221_ADDR40_GND);
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
 
-float currentarray1[100];
-float voltagearray1[100];
+float currentarray1[50];
+float voltagearray1[50];
+float powerarray1[50];
 int numloop = 0;
 
 void setup() {
@@ -38,7 +39,7 @@ void setup() {
 }
 
 void loop() {
-  if (numloop<100){
+  if (numloop<50){
   float current[3];
   float voltage[3];
 
@@ -74,39 +75,52 @@ void loop() {
   Serial.println();*/
 
   Serial.print("Current Array:");
-  for (int i = 0; i < 100; i = i + 1) {
+  for (int i = 0; i < 50; i = i + 1) {
     Serial.print(currentarray1[i]);
     Serial.print(", ");
   }
   
   Serial.println();
   Serial.print("Voltage Array:");
-  for (int i = 0; i < 100; i = i + 1) {
+  for (int i = 0; i < 50; i = i + 1) {
     Serial.print(voltagearray1[i]);
     Serial.print(", ");
   }
   Serial.println();
   numloop+=1;
-  delay(10);
+  delay(5);
   }
-  else if(numloop == 100){
+  else if(numloop == 50){
     tft.fillScreen(ILI9341_WHITE);
     tft.setRotation(0);
     tft.setCursor(40,40);
     tft.setTextSize(2);
     tft.setTextColor(ILI9341_BLACK);
     Serial.print("Average Current:");
+    Serial.println(avgvalue(currentarray1,numloop));
     tft.print("Average Current:");
-    avgvalue(currentarray1);
+    tft.print(avgvalue(currentarray1,numloop));
+    tft.println("A");
     tft.setCursor(40,70);
     Serial.print("Average Voltage:");
+    Serial.println(avgvalue(voltagearray1,numloop));
     tft.print("Average Voltage:");
-    avgvalue(voltagearray1);
+    tft.print(avgvalue(voltagearray1,numloop));
+    tft.println("V");
+    tft.setCursor(40,100);
+    Serial.println(avgvalue(powerarr(currentarray1,voltagearray1),numloop));
+    tft.print("Average Power:");
+    tft.print(avgvalue(powerarr(currentarray1,voltagearray1),numloop));
+    tft.println("W");
+    tft.setCursor(40,130);
+    tft.print("Average Energy:");
+    tft.print(energy(powerarr(currentarray1,voltagearray1)));
+    tft.println("J");
     numloop=0;
-    for (int i=0; i<100; i++){
+    for (int i=0; i<50; i++){
       currentarray1[i]=0;
       voltagearray1[i]=0;
-    delay(100);
+    delay(500);
     Serial.println("New Loop");
   }
   
@@ -114,13 +128,27 @@ void loop() {
   
 }
 
-void avgvalue(float arr1[100]){
-  float totalval = 0;
-  for (int i = 0; i < 100; i++){
-    totalval += arr1[i];
+float avgvalue(float arr1[50], int numloop){
+    float totalval = 0;
+    for (int i = 0; i < numloop; i++){
+      totalval += arr1[i];
+    }
+    float avgval = totalval/numloop;
+    return avgval;
+}
+
+float* powerarr(float carr1[50], float varr[50]){
+  for (int i = 0; i <50; i++){
+    powerarray1[i] = carr1[i]*varr[i];
   }
-  float avgval = totalval/100;
-  Serial.println(avgval);
-  Serial.println();
-  tft.println(avgval);
+  return powerarray1;
+}
+
+
+float energy(float powerarr[50]){
+  float avgenergy = 0;
+  for (int i = 0; i <50; i++){
+    avgenergy+= powerarr[i]*0.005;
+  }
+  return avgenergy;
 }
