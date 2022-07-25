@@ -96,31 +96,31 @@ void loop() {
     tft.setCursor(40,40);
     tft.setTextSize(2);
     tft.setTextColor(ILI9341_BLACK);
-    Serial.print("Average Current:");
+    Serial.print("Current:");
     Serial.println(avgvalue(currentarray1,numloop));
-    tft.print("Average Current:");
+    tft.print("Current:");
     tft.print(avgvalue(currentarray1,numloop));
     tft.println("A");
     tft.setCursor(40,70);
-    Serial.print("Average Voltage:");
+    Serial.print("Voltage:");
     Serial.println(avgvalue(voltagearray1,numloop));
-    tft.print("Average Voltage:");
+    tft.print("Voltage:");
     tft.print(avgvalue(voltagearray1,numloop));
     tft.println("V");
     tft.setCursor(40,100);
     Serial.println(avgvalue(powerarr(currentarray1,voltagearray1),numloop));
-    tft.print("Average Power:");
+    tft.print("Power:");
     tft.print(avgvalue(powerarr(currentarray1,voltagearray1),numloop));
     tft.println("W");
     tft.setCursor(40,130);
-    tft.print("Average Energy:");
+    tft.print("Energy:");
     tft.print(energy(powerarr(currentarray1,voltagearray1)));
-    tft.println("J");
+    tft.println("Ws");
     numloop=0;
     for (int i=0; i<50; i++){
       currentarray1[i]=0;
       voltagearray1[i]=0;
-    delay(500);
+    delay(100);
     Serial.println("New Loop");
   }
   
