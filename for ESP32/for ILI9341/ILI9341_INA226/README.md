@@ -51,7 +51,7 @@ INA226 Current and Voltage Sensor
 |GND			|GND       		    |
 |SDA			|21	     		    |
 |SCL			|22			    |
-|ALERT			|25			    |
+|ALERT			|18			    |
 <br/>
 
 
