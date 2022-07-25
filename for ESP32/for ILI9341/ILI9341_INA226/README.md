@@ -49,8 +49,8 @@ INA226 Current and Voltage Sensor
 | :--------------:|:--------:		    |
 |VCC			|3v3	 	          |
 |GND			|GND       		    |
-|SDA			|22	     		    |
-|SCL			|21			    |
+|SDA			|21	     		    |
+|SCL			|22			    |
 |ALERT			|25			    |
 <br/>
 
