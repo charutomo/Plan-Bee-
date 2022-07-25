@@ -1,4 +1,4 @@
-#include "SPI.h"
+  #include "SPI.h"
 #include "Adafruit_ILI9341.h"
 #include "AiEsp32RotaryEncoder.h"
 #include "Arduino.h"
@@ -228,12 +228,12 @@ void showtemp(void) {
   DS18B20.requestTemperatures();       
   tempC = DS18B20.getTempCByIndex(0);  
   tempF = tempC * 9 / 5 + 32;
-  offsetdegrees(90);
-  offsettext(110,2);
+  offsetdegrees(30);
+  offsettext(40,2);
   tft.print(tempC);
   tft.println(" C");
-  offsetdegrees(120);
-  offsettext(130,2);
+  offsetdegrees(60);
+  offsettext(70,2);
   tft.print(tempF);
   tft.println(" F");
 }
@@ -243,26 +243,30 @@ void credits(void) {
   tft.fillScreen(ILI9341_WHITE);
   offsettext(0,3);
   tft.println("Credits");
-  tft.setTextSize(2);
   tft.println();
+  offsettext(30,2);
   tft.println("Group Members:");
+  offsettext(60,2);
   tft.println("Andy,Jia Woei,Jinghui,");
+  offsettext(90,2);
   tft.println("Chermaine and Charissa");
   tft.println();
-  tft.println("With thanks to Tony and Qi");
-  tft.println("Jie");
+  offsettext(120,2);
+  tft.println("With thanks to Tony");
+  offsettext(150,2);
+  tft.println("and Qi Jie");
   
 }
 
 void offsettext(int y, int font){
-  tft.setCursor(30, y);
+  tft.setCursor(40, y);
   tft.setTextColor(ILI9341_BLACK);
   tft.setTextSize(font);
 
 }
 
 void offsetdegrees(int y){
-  tft.setCursor(65, y);
+  tft.setCursor(100, y);
   tft.setTextColor(ILI9341_BLACK);
   tft.setTextSize(1);
   tft.println("o");
