@@ -1,4 +1,4 @@
-  #include "SPI.h"
+#include "SPI.h"
 #include "Adafruit_ILI9341.h"
 #include "AiEsp32RotaryEncoder.h"
 #include "Arduino.h"
