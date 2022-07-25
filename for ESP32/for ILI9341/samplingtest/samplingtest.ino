@@ -43,6 +43,7 @@ void loop() {
   float current[3];
   float voltage[3];
 
+  Serial.println(numloop);
   current[0] = ina3221.getCurrent(INA3221_CH1);
   currentarray1[numloop] = ina3221.getCurrent(INA3221_CH1);
   voltage[0] = ina3221.getVoltage(INA3221_CH1);
@@ -108,11 +109,14 @@ void loop() {
     tft.print(avgvalue(voltagearray1,numloop));
     tft.println("V");
     tft.setCursor(40,100);
+    Serial.print("Power:");
     Serial.println(avgvalue(powerarr(currentarray1,voltagearray1),numloop));
     tft.print("Power:");
     tft.print(avgvalue(powerarr(currentarray1,voltagearray1),numloop));
     tft.println("W");
     tft.setCursor(40,130);
+    Serial.print("Energy:");
+    Serial.println(energy(powerarr(currentarray1,voltagearray1)));
     tft.print("Energy:");
     tft.print(energy(powerarr(currentarray1,voltagearray1)));
     tft.println("Ws");
