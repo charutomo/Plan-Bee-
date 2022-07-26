@@ -30,9 +30,9 @@
 
 int menu_state = 0;
 int value = 0;
-float currentarray1[50];
-float voltagearray1[50];
-float powerarray1[50];
+float currentarray1[10];
+float voltagearray1[10];
+float powerarray1[10];
 int numloop = 0;
 
 Beastdevices_INA3221 ina3221(INA3221_ADDR40_GND); 
@@ -90,24 +90,30 @@ void setup() {
 void loop() {
   if (rotaryEncoder.encoderChanged() && menu_state < 5) {
     value = rotaryEncoder.readEncoder();
-    if (value % 3 == 0) {
+    if (value % 4 == 0) {
       menu_state = 1;
-    } else if (value % 3 == 1) {
+    } else if (value % 4 == 1) {
       menu_state = 2;
-    } else if (value % 3 == 2) {
+    } else if (value % 4 == 2) {
       menu_state = 3;
+    }
+    else if (value % 4 == 3) {
+      menu_state = 4;
     }
     changemenu();
   }
   if (rotaryEncoder.isEncoderButtonClicked()) {
     if (menu_state >= 5){
       menu_state = 0;
-    } else if (value % 3 == 0) {
+    } else if (value % 4 == 0) {
       menu_state = 7;
-    } else if (value % 3 == 1) {
+    } else if (value % 4 == 1) {
       menu_state = 8;
-    } else if (value % 3 == 2) {
+    } else if (value % 4 == 2) {
       menu_state = 9;
+    } 
+    else if (value % 4 == 3) {
+      menu_state = 10;
     } 
     changemenu();
   }
@@ -141,6 +147,9 @@ void changemenu() {
   case 3:
     menu3();
     break;
+  case 4:
+    menu4();
+    break;
   case 7:
     showbattery();
     break;
@@ -149,6 +158,9 @@ void changemenu() {
     break;
   case 9:
     credits();
+    break;
+  case 10:
+    techsupport();
     break;
   }
 }
@@ -166,37 +178,45 @@ void menu() {
   tft.setCursor(70, 100);
   tft.println("Credits");
   tft.setCursor(70, 130);
+  tft.println("Tech Support");
+ 
 }
 
 // menu with selector on 1
 void menu1() {
-  tft.fillRect(40,40,30,100, ILI9341_BLACK);
+  tft.fillRect(40,40,30,130, ILI9341_BLACK);
   tft.setCursor(40, 40);
   tft.print("->");
 }
 
 // menu with selector on 2
 void menu2() {
-  tft.fillRect(40,40,30,100, ILI9341_BLACK);
+  tft.fillRect(40,40,30,130, ILI9341_BLACK);
   tft.setCursor(40, 70);
   tft.print("->");
 }
 
 // menu with selector on 3
 void menu3() {
-  tft.fillRect(40,40,30,100, ILI9341_BLACK);
+  tft.fillRect(40,40,30,130, ILI9341_BLACK);
   tft.setCursor(40, 100);
   tft.print("->");
 }
 
+// menu with selector on 4
+void menu4(){
+  tft.fillRect(40,40,30,130, ILI9341_BLACK);
+  tft.setCursor(40, 130);
+  tft.print("->");
+}
+
+
 // show the battery value
 void showbattery(void) {
   tft.fillScreen(ILI9341_BLACK);
-  offsettext(0,3);
-  tft.println("Battery");
   offsettext(40,2);
   tft.println();
-  if (numloop<50){
+  if (numloop<10){
   float current[3];
   float voltage[3];
 
@@ -233,24 +253,26 @@ void showbattery(void) {
   Serial.println();*/
 
   Serial.print("Current Array:");
-  for (int i = 0; i < 50; i = i + 1) {
+  for (int i = 0; i < 10; i = i + 1) {
     Serial.print(currentarray1[i]);
     Serial.print(", ");
   }
   
   Serial.println();
   Serial.print("Voltage Array:");
-  for (int i = 0; i < 50; i = i + 1) {
+  for (int i = 0; i < 10; i = i + 1) {
     Serial.print(voltagearray1[i]);
     Serial.print(", ");
   }
   Serial.println();
   numloop+=1;
-  delay(5);
+  delay(0.001);
   }
-  else if(numloop == 50){
+  else if(numloop == 10){
     tft.fillScreen(ILI9341_BLACK);
     tft.setRotation(0);
+    offsettext(0,3);
+    tft.println("Battery");
     offsettext(40,2);
     Serial.print("Current:");
     Serial.println(avgvalue(currentarray1,numloop));
@@ -275,11 +297,15 @@ void showbattery(void) {
     tft.print("Energy:");
     tft.print(energy(powerarr(currentarray1,voltagearray1)));
     tft.println("Ws");
+    offsettext(160,2);
+    tft.print("Battery Percent:");
+    tft.print(battpercent(avgvalue(voltagearray1,numloop)));
+    tft.println("%");
     numloop=0;
-    for (int i=0; i<50; i++){
+    for (int i=0; i<10; i++){
       currentarray1[i]=0;
       voltagearray1[i]=0;
-    delay(100);
+    delay(1000);
     Serial.println("New Loop");
   }
   
@@ -314,7 +340,7 @@ void credits(void) {
   offsettext(30,2);
   tft.println("Group Members:");
   offsettext(60,2);
-  tft.println("Andy,Jia Woei,Jinghui,");
+  tft.println("Andy,Jia Woei,Jing Hui,");
   offsettext(90,2);
   tft.println("Chermaine and Charissa");
   tft.println();
@@ -322,6 +348,16 @@ void credits(void) {
   tft.println("With thanks to Tony");
   offsettext(150,2);
   tft.println("and Qi Jie");
+}
+
+void techsupport(void){
+  tft.fillScreen(ILI9341_BLACK);
+  offsettext(0,3);
+  tft.println("Tech Support");
+  offsettext(40,2);
+  tft.println("Email Address:");
+  offsettext(70,2);
+  tft.println("planbee9555@gmail.com");
 }
 
 void offsettext(int y, int font){
@@ -337,7 +373,7 @@ void offsetdegrees(int y){
   tft.println("o");
 }
 
-float avgvalue(float arr1[50], int numloop){
+float avgvalue(float arr1[10], int numloop){
     float totalval = 0;
     for (int i = 0; i < numloop; i++){
       totalval += arr1[i];
@@ -346,18 +382,25 @@ float avgvalue(float arr1[50], int numloop){
     return avgval;
 }
 
-float* powerarr(float carr1[50], float varr[50]){
-  for (int i = 0; i <50; i++){
+float* powerarr(float carr1[10], float varr[10]){
+  for (int i = 0; i <10; i++){
     powerarray1[i] = carr1[i]*varr[i];
   }
   return powerarray1;
 }
 
 
-float energy(float powerarr[50]){
+float energy(float powerarr[10]){
   float avgenergy = 0;
-  for (int i = 0; i <50; i++){
+  for (int i = 0; i <10; i++){
     avgenergy+= powerarr[i]*0.005;
   }
   return avgenergy;
+}
+
+float battpercent(float avgvoltage){
+  if (avgvoltage<= 4.3 & avgvoltage >= 3.4){
+    float batterypercent = ((avgvoltage-3.4)/ (4.3 - 3.4))*100;
+    return batterypercent;
+  }
 }
