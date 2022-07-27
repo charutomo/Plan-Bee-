@@ -34,6 +34,10 @@ float currentarray1[10];
 float voltagearray1[10];
 float powerarray1[10];
 int numloop = 0;
+int batt = 1;
+int temp = 1;
+int cred = 1;
+int tech = 1;
 
 Beastdevices_INA3221 ina3221(INA3221_ADDR40_GND); 
 
@@ -92,13 +96,17 @@ void loop() {
     value = rotaryEncoder.readEncoder();
     if (value % 4 == 0) {
       menu_state = 1;
+      batt = 1;
     } else if (value % 4 == 1) {
       menu_state = 2;
+      temp = 1;
     } else if (value % 4 == 2) {
       menu_state = 3;
+      cred = 1;
     }
     else if (value % 4 == 3) {
       menu_state = 4;
+      tech = 1;
     }
     changemenu();
   }
@@ -213,7 +221,10 @@ void menu4(){
 
 // show the battery value
 void showbattery(void) {
-  tft.fillScreen(ILI9341_BLACK);
+  if (batt ==1){
+    refreshorig();
+    batt = 0;
+  }
   offsettext(40,2);
   tft.println();
   if (numloop<10){
@@ -269,7 +280,7 @@ void showbattery(void) {
   delay(0.001);
   }
   else if(numloop == 10){
-    tft.fillScreen(ILI9341_BLACK);
+    refreshbatt();
     tft.setRotation(0);
     offsettext(0,3);
     tft.println("Battery");
@@ -314,7 +325,13 @@ void showbattery(void) {
 
 // show the temperature
 void showtemp(void) {
-  tft.fillScreen(ILI9341_BLACK);
+  if (temp ==1){
+    refreshorig();
+    temp = 0;
+  }
+  else{
+    refreshtemp();
+  }
   offsettext(0,3);
   tft.println("Temperature");
   tft.println();
@@ -333,7 +350,10 @@ void showtemp(void) {
 
 // show the credits
 void credits(void) {
-  tft.fillScreen(ILI9341_BLACK);
+  if (cred == 1){
+    refreshorig();
+    cred = 0;
+  }
   offsettext(0,3);
   tft.println("Credits");
   tft.println();
@@ -351,7 +371,10 @@ void credits(void) {
 }
 
 void techsupport(void){
-  tft.fillScreen(ILI9341_BLACK);
+  if (tech == 1){
+    refreshorig();
+    tech = 0;
+  }
   offsettext(0,3);
   tft.println("Tech Support");
   offsettext(40,2);
@@ -371,6 +394,21 @@ void offsetdegrees(int y){
   tft.setTextColor(ILI9341_YELLOW);
   tft.setTextSize(1);
   tft.println("o");
+}
+
+void refreshorig(void){
+  tft.fillRect(40,40,200,120,ILI9341_BLACK);
+}
+
+void refreshbatt(void){
+  tft.fillRect(135,40,80,50,ILI9341_BLACK);
+  tft.fillRect(110,100,80,20,ILI9341_BLACK);
+  tft.fillRect(120,130,80,20,ILI9341_BLACK);
+  tft.fillRect(230,160,80,20,ILI9341_BLACK);
+}
+
+void refreshtemp(void){
+  tft.fillRect(40,30,60,80,ILI9341_BLACK);
 }
 
 float avgvalue(float arr1[10], int numloop){
