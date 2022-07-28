@@ -222,21 +222,25 @@ void showbattery(void) {
   tft.println("Battery");
   offsettext(40,2);
   tft.print("Current:");
-  tft.print(current[0], PRINT_DEC_POINTS);
-  tft.println("mA, ");
+  tft.println(current[0], PRINT_DEC_POINTS);
+  offsetunits(40,2);
+  tft.print("mA, ");
   offsettext(70,2);
   tft.print("Voltage:");
-  tft.print(voltage[0], PRINT_DEC_POINTS);
-  tft.println("V, ");
+  tft.println(voltage[0], PRINT_DEC_POINTS);
+  offsetunits(70,2);
+  tft.print("V, ");
   offsettext(100,2);
   tft.print("Power: "); 
-  tft.print(power0);
-  tft.println("mW");
+  tft.println(power0);
+  offsetunits(100,2);
+  tft.print("mW");
   offsettext(130,2);
   tft.println("Battery Percentage:");
   offsettext(160,2);
-  tft.print(battpercent);
-  tft.println("%");
+  tft.println(battpercent);
+  offsetunits(160,2);
+  tft.print("%");
 
 }
 
@@ -335,6 +339,16 @@ void offsetdegrees(int y){
   tft.println("o");
 }
 
+void offsetunits(int y, int font){
+  /*
+   * 
+   */
+   tft.setCursor(240, y);
+   tft.setTextColor(ILI9341_YELLOW);
+   tft.setTextSize(font);
+   
+}
+
 void refreshorig(void){
   /*
    * Function: refreshtemp
@@ -351,9 +365,9 @@ void refreshbatt(void){
    * Fills a blackbox space to cover the old battery values
    * for refreshing page on battery screen before showing new values
    */
-  tft.fillRect(135,40,60,50,ILI9341_BLACK);
-  tft.fillRect(110,100,60,20,ILI9341_BLACK);
-  tft.fillRect(40,160,60,30,ILI9341_BLACK);
+  tft.fillRect(135,40,80,50,ILI9341_BLACK);
+  tft.fillRect(110,100,100,20,ILI9341_BLACK);
+  tft.fillRect(40,160,90,30,ILI9341_BLACK);
 }
 
 void refreshtemp(void){
