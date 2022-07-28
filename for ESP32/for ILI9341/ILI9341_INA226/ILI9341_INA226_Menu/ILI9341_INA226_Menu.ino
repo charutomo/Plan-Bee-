@@ -249,7 +249,6 @@ void showtemp(void) {
   else{
     refreshtemp();
   }
-  tft.fillScreen(ILI9341_BLACK);
   offsettext(0,3);
   tft.println("Temperature");
   tft.println();
@@ -274,7 +273,6 @@ void credits(void) {
     refreshorig();
     cred = 0;
   }
-  tft.fillScreen(ILI9341_BLACK);
   offsettext(0,3);
   tft.println("Credits");
   tft.println();
@@ -299,7 +297,6 @@ void techsupport(void){
     refreshorig();
     tech = 0;
   }
-  tft.fillScreen(ILI9341_BLACK);
   offsettext(0,3);
   tft.println("Tech Support");
   offsettext(40,2);
@@ -354,10 +351,9 @@ void refreshbatt(void){
    * Fills a blackbox space to cover the old battery values
    * for refreshing page on battery screen before showing new values
    */
-  tft.fillRect(135,40,80,50,ILI9341_BLACK);
-  tft.fillRect(110,100,80,20,ILI9341_BLACK);
-  tft.fillRect(120,130,80,20,ILI9341_BLACK);
-  tft.fillRect(40,160,50,20,ILI9341_BLACK);
+  tft.fillRect(135,40,60,50,ILI9341_BLACK);
+  tft.fillRect(110,100,60,20,ILI9341_BLACK);
+  tft.fillRect(40,160,60,30,ILI9341_BLACK);
 }
 
 void refreshtemp(void){
