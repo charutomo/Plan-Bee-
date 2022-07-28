@@ -21,6 +21,7 @@
 #define ROTARY_ENCODER_BUTTON_PIN 16
 #define ROTARY_ENCODER_VCC_PIN - 1 
 #define ROTARY_ENCODER_STEPS 4
+#define RELAY_PIN1 2
 
 float tempC; 
 float tempF;
@@ -35,6 +36,7 @@ int batt = 1;
 int temp = 1;
 int cred = 1;
 int tech = 1;
+float voltage[2];
 
 OneWire oneWire(SENSOR_PIN);
 DallasTemperature DS18B20(&oneWire);
@@ -55,6 +57,9 @@ void setup() {
   bool circleValues = false;
   rotaryEncoder.setBoundaries(0, 1000, circleValues); //minValue, maxValue, circleValues true|false (when max go to min and vice versa)
   rotaryEncoder.setAcceleration(250); 
+
+  //initalise digital pin as an output
+  pinMode(RELAY_PIN1, OUTPUT);
   
   tft.begin();
   DS18B20.begin();
@@ -63,6 +68,7 @@ void setup() {
   tft.setRotation(0);
   tft.drawRGBBitmap(0, 0, Plan_Bee_Logo_ALIVE, BEE_WIDTH,BEE_HEIGHT);
   delay(1000);
+  
   ina226batt.init();
   ina226batt.setAverage(AVERAGE_128); 
   ina226batt.setConversionTime(CONV_TIME_8244); 
@@ -73,6 +79,11 @@ void setup() {
 }
 
 void loop() {
+  ina226batt.startSingleMeasurement();
+  ina226batt.readAndClearFlags();
+  voltage[0] = ina226batt.getBusVoltage_V(); 
+  relay(voltage[0]);
+  
   if (rotaryEncoder.encoderChanged() && menu_state < 5) {
     value = rotaryEncoder.readEncoder();
     if (value % 4 == 0) {
@@ -200,7 +211,6 @@ void menu4(){
   tft.print("->");
 }
 
-
 // show the battery value
 void showbattery(void) {
   if (batt ==1){
@@ -238,10 +248,9 @@ void showbattery(void) {
   offsettext(130,2);
   tft.println("Battery Percentage:");
   offsettext(160,2);
-  tft.println(battpercent);
+  tft.print(battpercent);
   offsetunits(160,2);
-  tft.print("%");
-
+  tft.println("%");
 }
 
 // show the temperature
@@ -313,13 +322,12 @@ void techsupport(void){
 
 void offsettext(int y, int font){
   /*
-   * Function: offsetdegrees
+   * Function: offsetdegree
    * ----------------
    * Set cursor to (40,y) which indent the screen and set text size accordingly to the input font
    * 
    * y: y-axis value to be input for printing text
    * font: font size of the text to be printed on display
-   * 
    */
   tft.setCursor(40, y);
   tft.setTextColor(ILI9341_YELLOW);
@@ -328,7 +336,7 @@ void offsettext(int y, int font){
 
 void offsetdegrees(int y){
   /*
-   * Function: offsetdegree
+   * Function: offsetdegrees
    * ----------------
    * Set cursor and indent the screen to show the degree symbol
    * 
@@ -359,7 +367,7 @@ void offsetunits(int y, int font){
 
 void refreshorig(void){
   /*
-   * Function: refreshtemp
+   * Function: refreshorig
    * ----------------
    * Fills a blackbox space to cover the menu screen for refreshing page 
    * 
@@ -389,4 +397,21 @@ void refreshtemp(void){
    * 
    */
   tft.fillRect(40,30,60,80,ILI9341_BLACK);
+}
+
+void relay(float avgvolt) {
+  /*
+   * Function: relay
+   * ----------------
+   * Activates relay with normally closed mode .
+   * If any given voltage of battery is above 4.2 volts, it switches off to prevent overcharging of the battery.
+   * Otherwise, it will continuously be on.
+   * 
+   */
+  if (avgvolt >= 4.2) {
+    digitalWrite(RELAY_PIN1, HIGH); 
+  }
+  else {
+    digitalWrite(RELAY_PIN1, LOW);
+  }
 }

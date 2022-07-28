@@ -349,12 +349,13 @@ void techsupport(void){
 
 void offsettext(int y, int font){
   /*
-   * Function: offsetdegree
+   * Function: offsettext
    * ----------------
    * Set cursor to (40,y) which indent the screen and set text size accordingly to the input font
    * 
    * y: y-axis value to be input for printing text
    * font: font size of the text to be printed on display
+   * 
    */
   tft.setCursor(40, y);
   tft.setTextColor(ILI9341_YELLOW);
@@ -363,11 +364,12 @@ void offsettext(int y, int font){
 
 void offsetdegrees(int y){
   /*
-   * Function: offsetdegree
+   * Function: offsetdegrees
    * ----------------
    * Set cursor and indent the screen to show the degree symbol
    * 
    * y: y-axis value to be input for the degrees symbol
+   * 
    */
   tft.setCursor(100, y);
   tft.setTextColor(ILI9341_YELLOW);
@@ -377,7 +379,7 @@ void offsetdegrees(int y){
 
 void refreshorig(void){
   /*
-   * Function: refreshtemp
+   * Function: refreshorig
    * ----------------
    * Fills a blackbox space to cover the menu screen for refreshing page 
    */
@@ -386,10 +388,11 @@ void refreshorig(void){
 
 void refreshbatt(void){
   /*
-   * Function: refreshtemp
+   * Function: refreshbatt
    * ----------------
    * Fills a blackbox space to cover the old battery values
    * for refreshing page on battery screen before showing new values
+   * 
    */
   tft.fillRect(135,40,80,50,ILI9341_BLACK);
   tft.fillRect(110,100,80,20,ILI9341_BLACK);
@@ -403,6 +406,7 @@ void refreshtemp(void){
    * ----------------
    * Fills a blackbox space to cover the old temperature values for refreshing page
    * on temperature screen before showing new values
+   * 
    */
   tft.fillRect(40,30,60,80,ILI9341_BLACK);
 }
@@ -419,6 +423,7 @@ float avgvalue(float arr1[10], int numloop){
      * 
      * returns:
      *  avgvalue 
+     *  
      */
     float totalval = 0;
     for (int i = 0; i < numloop; i++){
@@ -440,6 +445,7 @@ float* powerarr(float carr1[10], float varr1[10]){
    * 
    * returns:
    * powerarray1 
+   * 
    */
   for (int i = 0; i <10; i++){
     powerarray1[i] = carr1[i]*varr1[i];
@@ -459,6 +465,7 @@ float energy(float powerarr[10]){
    *  
    *  returns:
    *  Average Energy via Riemann Sum or Total Area under the rectangular graph at each point for Power-Time Graph
+   *  
    */
   float avgenergy = 0;
   for (int i = 0; i <10; i++){
@@ -477,6 +484,7 @@ float battpercent(float avgvoltage){
    *   avgvoltage: average voltage value after sampling taken by INA3221
    *   
    *   returns: batterypercent (battery percentage of power bank)
+   *   
    */
   if (avgvoltage<= 4.3 & avgvoltage >= 3.4){
     float batterypercent = ((avgvoltage-3.4)/ (4.3 - 3.4))*100;
