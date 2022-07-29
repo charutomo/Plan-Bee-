@@ -53,11 +53,13 @@ Listed below are the current codes for `Plan Bee`: <br/>
 ## Components
 Currently, we use the following items for the functions: <br/>
 
-|Items			| Model No. 1| Model No. 2| Model No. 3|
-| :----------------:	|:--------:	 |:--------:  |:--------:  |
-|Current, Voltage Sensor| INA3221	 | INA226	  | -		   |
-|Display Screen		| SSD1306	 | SSH1106	  | ILI9341	   |
-|Temperature Sensor	| DS18B20	 |	-	  |	-	   |
+|Items			| Model No. 1	| Model No. 2 | Model No. 3|
+| :----------------:	|:--------:	 	|:--------:   |:--------:  |
+|Current, Voltage Sensor| INA3221	 	| INA226	  | -		   |
+|Display Screen		| SSD1306	 	| SSH1106	  | ILI9341	   |
+|Temperature Sensor	| DS18B20	 	|	-	  |	-	   |
+|Encoder			| HW040	 	|	-	  |	-	   |
+|Relay			|SRD-05VDC-SL-C	| 	-	  |	-	   |
 <br/>
 
 ## Acknowledgement
