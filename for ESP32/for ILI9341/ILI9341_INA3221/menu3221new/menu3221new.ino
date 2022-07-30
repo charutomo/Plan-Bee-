@@ -22,6 +22,7 @@
 #define ROTARY_ENCODER_BUTTON_PIN 16
 #define ROTARY_ENCODER_VCC_PIN - 1 
 #define ROTARY_ENCODER_STEPS 4
+#define RELAY_PIN1 2
 
 int menu_state = 0;
 int value = 0;
@@ -29,12 +30,14 @@ int batt = 1;
 int temp = 1;
 int cred = 1;
 int tech = 1;
+int numloop = 0;
 float tempC; 
 float tempF;
+float voltage[3];
 float currentarray1[10];
 float voltagearray1[10];
 float powerarray1[10];
-int numloop = 0;
+
 
 Beastdevices_INA3221 ina3221(INA3221_ADDR40_GND); 
 
@@ -74,6 +77,8 @@ void setup() {
 }
 
 void loop() {
+  voltage[0] = ina3221.getVoltage(INA3221_CH1);
+  relay(voltage[0]);
   if (rotaryEncoder.encoderChanged() && menu_state < 5) {
     value = rotaryEncoder.readEncoder();
     if (value % 4 == 0) {
@@ -433,6 +438,23 @@ float avgvalue(float arr1[10], int numloop){
     return avgval;
 }
 
+void relay(float avgvolt) {
+  /*
+   * Function: relay
+   * ----------------
+   * Activates relay with normally closed mode .
+   * If any given voltage of battery is above 4.2 volts, it switches off to prevent overcharging of the battery.
+   * Otherwise, it will continuously be on.
+   * 
+   */
+  if (avgvolt >= 4.2) {
+    digitalWrite(RELAY_PIN1, HIGH); 
+  }
+  else {
+    digitalWrite(RELAY_PIN1, LOW);
+  }
+}
+
 float* powerarr(float carr1[10], float varr1[10]){
   /*
    * Function: powerarr
@@ -479,15 +501,15 @@ float battpercent(float avgvoltage){
    *   Function: battpercent
    *   ---------------------
    *   compute the battery percentage in terms of voltage difference at the battery
-   *    equation are as follows battery percent = ((avgvoltage-3.4)/ (4.3 - 3.4))*100%
+   *    equation are as follows battery percent = ((avgvoltage-3.4)/ (4.2 - 3.4))*100%
    *    
    *   avgvoltage: average voltage value after sampling taken by INA3221
    *   
    *   returns: batterypercent (battery percentage of power bank)
    *   
    */
-  if (avgvoltage<= 4.3 & avgvoltage >= 3.4){
-    float batterypercent = ((avgvoltage-3.4)/ (4.3 - 3.4))*100;
+  if (avgvoltage<= 4.2 & avgvoltage >= 3.4){
+    float batterypercent = ((avgvoltage-3.4)/ (4.2 - 3.4))*100;
     return batterypercent;
   }
 }
