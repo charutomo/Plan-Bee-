@@ -66,6 +66,15 @@ HW040 Encoder
 |GND			|GND			    |
 <br/>
 
+SRD-05VDC-SL-C Relay
+<br/>
+|SRD-05VDC-SL-C		|Type of Pin on ESP32 |
+| :--------------:	|:--------:		    |
+|VCC				|3v3	 	          |
+|IN1				|2			    |
+|GND				|GND       		    |
+<br/>
+
 
 
 
