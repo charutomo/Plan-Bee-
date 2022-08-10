@@ -227,7 +227,7 @@ void showbattery(void) {
   current[0] = ina226batt.getCurrent_mA();
   voltage[0] = ina226batt.getBusVoltage_V();
   float power0 = ina226batt.getBusPower();
-  float battpercent = ((voltage[0]-3.4)/(4.3-3.4))*100;
+  float battpercent = ((voltage[0]-3.4)/(4.2-3.4))*100;
   offsettext(0,3);
   tft.println("Battery");
   offsettext(40,2);

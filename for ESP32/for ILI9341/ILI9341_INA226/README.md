@@ -56,11 +56,11 @@ INA226 Current and Voltage Sensor
 
 SRD-05VDC-SL-C Relay
 <br/>
-|Relay		|Type of Pin on ESP32 |
-| :--------------:|:--------:		    |
-|VCC			|3v3	 	          |
-|IN1			|2			    |
-|GND			|GND       		    |
+|SRD-05VDC-SL-C		|Type of Pin on ESP32 |
+| :--------------:	|:--------:		    |
+|VCC				|3v3	 	          |
+|IN1				|2			    |
+|GND				|GND       		    |
 <br/>
 
 
