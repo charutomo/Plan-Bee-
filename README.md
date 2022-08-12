@@ -49,6 +49,38 @@ Listed below are the current codes for `Plan Bee`: <br>
 </details>
 <br>
 
+## Libraries
+These are libraries imported:
+<br>
+
+### Current and Voltage Sensor
+
+* [BeastDevices INA3221](https://github.com/beast-devices/Arduino-INA3221)
+
+* [INA226_WE](https://github.com/wollewald/INA226_WE)
+
+<br>
+
+### Display Screen
+
+* [Adafruit ILI9341](https://github.com/adafruit/Adafruit_ILI9341)
+
+* [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
+
+<br>
+
+### Temperature Sensor
+
+* [DallasTemperature](https://github.com/vlast3k/Arduino-libraries/tree/master/DallasTemperature)
+
+<br>
+
+### Encoder
+
+* [Ai Esp32 Rotary Encoder](https://github.com/igorantolic/ai-esp32-rotary-encoder)
+
+<br>
+
 
 ## Components
 Currently, we use the following items for the functions: <br>
