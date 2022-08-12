@@ -20,7 +20,7 @@
 #define ROTARY_ENCODER_B_PIN 17
 #define ROTARY_ENCODER_BUTTON_PIN 16
 #define ROTARY_ENCODER_VCC_PIN - 1 
-#define ROTARY_ENCODER_STEPS 8
+#define ROTARY_ENCODER_STEPS 4
 #define RELAY_PIN1 2
 
 float tempC; 
@@ -37,6 +37,7 @@ int temp = 1;
 int cred = 1;
 int tech = 1;
 float voltage[2];
+bool active_state;
 
 OneWire oneWire(SENSOR_PIN);
 DallasTemperature DS18B20(&oneWire);
@@ -81,12 +82,17 @@ void setup() {
 }
 
 void loop() {
-  ina226batt.startSingleMeasurement();
-  ina226batt.readAndClearFlags();
-  voltage[0] = ina226batt.getBusVoltage_V(); 
-  relay(voltage[0]);
-  
-  if (rotaryEncoder.encoderChanged() && menu_state < 5) {
+  if (rotaryEncoder.isEncoderButtonClicked() && active_state == false) {
+    active_state == true;
+  }
+  else if (active_state == false){
+    ina226batt.startSingleMeasurement();
+    ina226batt.readAndClearFlags();
+    voltage[0] = ina226batt.getBusVoltage_V(); 
+    relay(voltage[0]);
+    Serial.println(voltage[0]);
+  }
+  if (rotaryEncoder.encoderChanged() && menu_state < 5 && active_state == true) {
     value = rotaryEncoder.readEncoder();
     Serial.println(value);
     if (value % 4 == 0) {
@@ -105,7 +111,7 @@ void loop() {
     }
     changemenu();
   }
-  if (rotaryEncoder.isEncoderButtonClicked()) {
+  if (rotaryEncoder.isEncoderButtonClicked() && active_state == true) {
     if (menu_state >= 5){
       menu_state = 0;
     } else if (value % 4 == 0) { 
@@ -124,6 +130,7 @@ void loop() {
     changemenu();
     delay(1000);
   }
+  Serial.println(active_state);
 }
 
 void changemenu() {
@@ -159,8 +166,8 @@ void changemenu() {
     showbattery();
     break;
   case 8:
-   showtemp();
-   break;
+    showtemp();
+    break;
   case 9:
     credits();
     break;
@@ -184,6 +191,8 @@ void menu() {
   tft.println("Credits");
   tft.setCursor(70, 130);
   tft.println("Tech Support");
+  active_state = false;
+  Serial.println("false");
 }
 
 // menu with selector on 1
