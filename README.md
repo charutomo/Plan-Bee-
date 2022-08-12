@@ -67,6 +67,7 @@ These are libraries imported:
 ### Encoder
 * [Ai Esp32 Rotary Encoder](https://github.com/igorantolic/ai-esp32-rotary-encoder)
 
+<br>
 
 ## Components
 Currently, we use the following items for the functions: 
