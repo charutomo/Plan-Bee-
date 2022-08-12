@@ -20,6 +20,7 @@ in fulfilment of the course PS5888: Making and Tinkering. In this particular rep
 it would consists the C & C++ codes of our functions in our power bank
 for Arduino Uno and ESP32-WROOM-32D respectively. More Information can be found in our [blog](https://blogs.ntu.edu.sg/ps5888-2022-g11/).
 
+<br>
 
 ## Content Of Repository 
 Listed below are the current codes for `Plan Bee`: 
@@ -46,6 +47,7 @@ Listed below are the current codes for `Plan Bee`:
 * [image](https://github.com/charutomo/Plan-Bee-/blob/main/image)
 </details>
 
+<br>
 
 ## Libraries
 These are libraries imported:
@@ -82,6 +84,6 @@ Currently, we use the following items for the functions:
 
 ## Acknowledgement
 Special thanks to Tony and Qi Jie for their guidance throughout the whole project of `Plan Bee`.
-
+<br>
 
 Thank you for your support! :blush:
