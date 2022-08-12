@@ -60,6 +60,8 @@ void setup() {
 
   //initalise digital pin as an output
   pinMode(RELAY_PIN1, OUTPUT);
+
+  Serial.begin(115200);
   
   tft.begin();
   DS18B20.begin();
@@ -86,6 +88,7 @@ void loop() {
   
   if (rotaryEncoder.encoderChanged() && menu_state < 5) {
     value = rotaryEncoder.readEncoder();
+    Serial.println(value);
     if (value % 4 == 0) {
       menu_state = 1;
       batt = 1;
