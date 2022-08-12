@@ -20,7 +20,7 @@
 #define ROTARY_ENCODER_B_PIN 17
 #define ROTARY_ENCODER_BUTTON_PIN 16
 #define ROTARY_ENCODER_VCC_PIN - 1 
-#define ROTARY_ENCODER_STEPS 4
+#define ROTARY_ENCODER_STEPS 8
 #define RELAY_PIN1 2
 
 float tempC; 
@@ -60,6 +60,8 @@ void setup() {
 
   //initalise digital pin as an output
   pinMode(RELAY_PIN1, OUTPUT);
+
+  Serial.begin(115200);
   
   tft.begin();
   DS18B20.begin();
@@ -86,6 +88,7 @@ void loop() {
   
   if (rotaryEncoder.encoderChanged() && menu_state < 5) {
     value = rotaryEncoder.readEncoder();
+    Serial.println(value);
     if (value % 4 == 0) {
       menu_state = 1;
       batt = 1;

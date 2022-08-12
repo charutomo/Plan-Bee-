@@ -55,6 +55,9 @@ void setup() {
   bool circleValues = false;
   rotaryEncoder.setBoundaries(0, 1000, circleValues); //minValue, maxValue, circleValues true|false (when max go to min and vice versa)
   rotaryEncoder.setAcceleration(250); 
+
+  //initalise digital pin as an output
+  pinMode(RELAY_PIN1, OUTPUT);
   
   tft.begin();
   DS18B20.begin();
