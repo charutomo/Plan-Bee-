@@ -81,9 +81,11 @@ Currently, we use the following items for the functions:
 |Encoder			| HW040	 	|	-	  |	-	   |
 |Relay			|SRD-05VDC-SL-C	| 	-	  |	-	   |
 
+<br>
 
 ## Acknowledgement
 Special thanks to Tony and Qi Jie for their guidance throughout the whole project of `Plan Bee`.
+
 <br>
 
 Thank you for your support! :blush:
