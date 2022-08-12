@@ -2,13 +2,13 @@
 
 **Hand crank Emergency Power Bank**
 
-<br/>
+<br>
 
   
 
 **Welcome!** :wave:
 
-<br/>
+<br>
 
   
 
@@ -17,10 +17,10 @@
 <h3 align="center">Plan Bee</h3>
 # Plan-Bee-
 **Hand crank Emergency Power Bank**
-<br/>
+<br>
 
 **Welcome!** :wave:
-<br/>
+<br>
 
 ## Introduction
 <h3 align="center">Plan Bee</h3>
@@ -36,12 +36,12 @@ are part of Plan Bee and we are making a prototype of an emergency hand crank po
 in fulfilment of the course PS5888: Making and Tinkering. In this particular repository, 
 it would consists the C & C++ codes of our functions in our power bank
 for Arduino Uno and ESP32-WROOM-32D respectively. More Information can be found in our [blog](https://blogs.ntu.edu.sg/ps5888-2022-g11/).
-<br/>
-<br/>
+<br>
+<br>
 
 ## Content Of Repository 
-Listed below are the current codes for `Plan Bee`: <br/>
-<br/>
+Listed below are the current codes for `Plan Bee`: <br>
+<br>
 <details>
 	<summary>Table of Content</summary>
 
@@ -64,11 +64,11 @@ Listed below are the current codes for `Plan Bee`: <br/>
 * [image](https://github.com/charutomo/Plan-Bee-/blob/main/image)
 
 </details>
-<br/>
+<br>
 
 ## Libraries
 These are libraries imported:
-<br/>
+<br>
 
 ### Current and Voltage Sensor
 
@@ -76,7 +76,7 @@ These are libraries imported:
 
 * [INA226_WE](https://github.com/wollewald/INA226_WE)
 
-<br/>
+<br>
 
 ### Display Screen
 
@@ -84,23 +84,23 @@ These are libraries imported:
 
 * [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
 
-<br/>
+<br>
 
 ### Temperature Sensor
 
 * [DallasTemperature](https://github.com/vlast3k/Arduino-libraries/tree/master/DallasTemperature)
 
-<br/>
+<br>
 
 ### Encoder
 
 * [Ai Esp32 Rotary Encoder](https://github.com/igorantolic/ai-esp32-rotary-encoder)
 
-<br/>
+<br>
 
 
 ## Components
-Currently, we use the following items for the functions: <br/>
+Currently, we use the following items for the functions: <br>
 
 |Items			| Model No. 1	| Model No. 2 | Model No. 3|
 | :----------------:	|:--------:	 	|:--------:   |:--------:  |
@@ -109,12 +109,12 @@ Currently, we use the following items for the functions: <br/>
 |Temperature Sensor	| DS18B20	 	|	-	  |	-	   |
 |Encoder			| HW040	 	|	-	  |	-	   |
 |Relay			|SRD-05VDC-SL-C	| 	-	  |	-	   |
-<br/>
+<br>
 
 ## Acknowledgement
 Special thanks to Tony and Qi Jie for their guidance throughout the whole project of `Plan Bee`.
 
-<br/>
+<br>
 Thank you for your support! :blush:
 
 <div align="center">
@@ -141,17 +141,17 @@ it would consists the C & C++ codes of our functions in our power bank
 
 for Arduino Uno and ESP32-WROOM-32D respectively. More Information can be found in our [blog](https://blogs.ntu.edu.sg/ps5888-2022-g11/).
 
-<br/>
+<br>
 
-<br/>
+<br>
 
   
 
 ## Content Of Repository
 
-Listed below are the current codes for `Plan Bee`: <br/>
+Listed below are the current codes for `Plan Bee`: <br>
 
-<br/>
+<br>
 
 <details>
 
@@ -195,7 +195,7 @@ Listed below are the current codes for `Plan Bee`: <br/>
 
 </details>
 
-<br/>
+<br>
 
 ## Components
 
@@ -215,7 +215,7 @@ Special thanks to Tony and Qi Jie for their guidance throughout the whole projec
 
   
 
-<br/>
+<br>
 
 Thank you for your support! :blush:
 
