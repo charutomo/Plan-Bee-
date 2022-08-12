@@ -27,6 +27,7 @@ Listed below are the current pins occupied for `Plan Bee`:
 |CS			|27			    |
 |GND			|GND       		    |
 |VCC			|3v3	       	    |
+
 This is for the 2.4 inch ILI9341 Display.
 
 ### SSH1106
@@ -36,6 +37,7 @@ This is for the 2.4 inch ILI9341 Display.
 |VCC		|3v3	 	      |
 |SCL		|22	     		|
 |SDA		|21			|
+
 This is for the 1.3 inch ILI9341 Display.
 
 ### SSD1306
@@ -48,6 +50,7 @@ This is for the 1.3 inch ILI9341 Display.
 |RESET	|25		     	    |
 |DC		|26			    |
 |CS		|27			    |
+
 This is for the 0.96 inch ILI9341 Display.
 
 ### Temperature Sensor DS18B20
