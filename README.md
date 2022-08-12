@@ -60,6 +60,7 @@ These are libraries imported:
 * [INA226_WE](https://github.com/wollewald/INA226_WE)
 
 <br/>
+
 ### Display Screen
 
 * [Adafruit ILI9341](https://github.com/adafruit/Adafruit_ILI9341)
@@ -69,6 +70,7 @@ These are libraries imported:
 <br/>
 
 ### Temperature Sensor
+
 * [DallasTemperature](https://github.com/vlast3k/Arduino-libraries/tree/master/DallasTemperature)
 
 <br/>
