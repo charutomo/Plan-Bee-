@@ -21,7 +21,6 @@ it would consists the C & C++ codes of our functions in our power bank
 for Arduino Uno and ESP32-WROOM-32D respectively. More Information can be found in our [blog](https://blogs.ntu.edu.sg/ps5888-2022-g11/).
 <br>
 <br>
-
 ## Content Of Repository 
 Listed below are the current codes for `Plan Bee`: <br>
 <br>
@@ -48,9 +47,15 @@ Listed below are the current codes for `Plan Bee`: <br>
 
 </details>
 <br>
-
 ## Libraries
 These are libraries imported:
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 
 ### Current and Voltage Sensor
@@ -60,7 +65,6 @@ These are libraries imported:
 * [INA226_WE](https://github.com/wollewald/INA226_WE)
 
 <br>
-
 ### Display Screen
 
 * [Adafruit ILI9341](https://github.com/adafruit/Adafruit_ILI9341)
@@ -68,13 +72,11 @@ These are libraries imported:
 * [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
 
 <br>
-
 ### Temperature Sensor
 
 * [DallasTemperature](https://github.com/vlast3k/Arduino-libraries/tree/master/DallasTemperature)
 
 <br>
-
 ### Encoder
 
 * [Ai Esp32 Rotary Encoder](https://github.com/igorantolic/ai-esp32-rotary-encoder)
