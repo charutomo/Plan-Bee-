@@ -72,6 +72,7 @@ void setup() {
   ina226batt.setCurrentRange(MA_800); 
   ina226batt.setCorrectionFactor(0.72); 
   menu();
+  
 }
 
 void loop() {
@@ -206,7 +207,7 @@ void menu4(){
 
 // show the battery value
 void showbattery(void) {
-  if (batt ==1){
+  if (batt == 1){
     refreshorig();
     batt = 0;
   }
@@ -215,10 +216,12 @@ void showbattery(void) {
   }
   float current[2]; //no. of channels
   float voltage[2];
+  Serial.println(millis());
   ina226batt.startSingleMeasurement();
   ina226batt.readAndClearFlags();
   current[0] = ina226batt.getCurrent_mA();
   voltage[0] = ina226batt.getBusVoltage_V();
+  Serial.println(millis());
   float power0 = ina226batt.getBusPower();
   float battpercent = ((voltage[0]-3.4)/(4.3-3.4))*100;
   offsettext(0,3);
