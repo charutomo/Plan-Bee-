@@ -37,7 +37,7 @@ int temp = 1;
 int cred = 1;
 int tech = 1;
 float voltage[2];
-bool active_state;
+bool active_state = false;
 
 OneWire oneWire(SENSOR_PIN);
 DallasTemperature DS18B20(&oneWire);
@@ -79,58 +79,70 @@ void setup() {
   ina226batt.setCurrentRange(MA_800); 
   ina226batt.setCorrectionFactor(0.72); 
   menu();
+
+  Serial.println(active_state);
 }
 
 void loop() {
-  if (rotaryEncoder.isEncoderButtonClicked() && active_state == false) {
-    active_state == true;
-  }
-  else if (active_state == false){
+  if (active_state == true){
+    if (rotaryEncoder.encoderChanged() && menu_state < 5) {
+      value = rotaryEncoder.readEncoder();
+      Serial.println(value);
+      if (value % 4 == 0) {
+        menu_state = 1;
+        batt = 1;
+      } else if (value % 4 == 1) {
+        menu_state = 2;
+        temp = 1;
+      } else if (value % 4 == 2) {
+        menu_state = 3;
+        cred = 1;
+      }
+      else if (value % 4 == 3) {
+        menu_state = 4;
+        tech = 1;
+      }
+      changemenu();
+    }
+    if (rotaryEncoder.isEncoderButtonClicked()) {
+      if (menu_state >= 5){
+        menu_state = 0;
+      } else if (value % 4 == 0) { 
+        menu_state = 7;
+      } else if (value % 4 == 1) {
+        menu_state = 8;
+      } else if (value % 4 == 2) {
+        menu_state = 9;
+      } 
+      else if (value % 4 == 3) {
+        menu_state = 10;
+      } 
+      changemenu();
+    }
+    if (menu_state>5){
+      changemenu();
+      delay(1000);
+    }
+  }   
+  else if(active_state == false){
+    for (int i = 0; i < 7000; i++){ 
+      //Serial.println(i);
+      if (rotaryEncoder.isEncoderButtonClicked()) {
+        active_state = true;
+        menu1();
+      }
+    }
+    Serial.println(active_state);
+    Serial.print("Start: ");
+    Serial.println(millis());
     ina226batt.startSingleMeasurement();
     ina226batt.readAndClearFlags();
     voltage[0] = ina226batt.getBusVoltage_V(); 
     relay(voltage[0]);
     Serial.println(voltage[0]);
+    Serial.print("End: ");
+    Serial.println(millis());
   }
-  if (rotaryEncoder.encoderChanged() && menu_state < 5 && active_state == true) {
-    value = rotaryEncoder.readEncoder();
-    Serial.println(value);
-    if (value % 4 == 0) {
-      menu_state = 1;
-      batt = 1;
-    } else if (value % 4 == 1) {
-      menu_state = 2;
-      temp = 1;
-    } else if (value % 4 == 2) {
-      menu_state = 3;
-      cred = 1;
-    }
-    else if (value % 4 == 3) {
-      menu_state = 4;
-      tech = 1;
-    }
-    changemenu();
-  }
-  if (rotaryEncoder.isEncoderButtonClicked() && active_state == true) {
-    if (menu_state >= 5){
-      menu_state = 0;
-    } else if (value % 4 == 0) { 
-      menu_state = 7;
-    } else if (value % 4 == 1) {
-      menu_state = 8;
-    } else if (value % 4 == 2) {
-      menu_state = 9;
-    } 
-    else if (value % 4 == 3) {
-      menu_state = 10;
-    } 
-    changemenu();
-  }
-  if (menu_state>5){
-    changemenu();
-    delay(1000);
-  }
-  Serial.println(active_state);
 }
 
 void changemenu() {
