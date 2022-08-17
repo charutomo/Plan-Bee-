@@ -405,7 +405,7 @@ void refreshbatt(void){
    * for refreshing page on battery screen before showing new values
    * 
    */
-  tft.fillRect(135,40,80,50,ILI9341_BLACK);
+  tft.fillRect(135,40,80,60,ILI9341_BLACK);
   tft.fillRect(110,100,100,20,ILI9341_BLACK);
   tft.fillRect(40,160,90,30,ILI9341_BLACK);
 }
