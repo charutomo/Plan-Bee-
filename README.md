@@ -56,11 +56,9 @@ These are libraries imported:
 * [BeastDevices INA3221](https://github.com/beast-devices/Arduino-INA3221)
 * [INA226_WE](https://github.com/wollewald/INA226_WE)
 
-
 ### Display Screen
 * [Adafruit ILI9341](https://github.com/adafruit/Adafruit_ILI9341)
 * [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
-
 
 ### Temperature Sensor
 * [DallasTemperature](https://github.com/vlast3k/Arduino-libraries/tree/master/DallasTemperature)
