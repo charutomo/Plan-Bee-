@@ -43,7 +43,7 @@ OneWire oneWire(SENSOR_PIN);
 DallasTemperature DS18B20(&oneWire);
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
 AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
-INA226_WE ina226 = INA226_WE(0x40); 
+INA226_WE ina226batt = INA226_WE(0x40); 
 
 void IRAM_ATTR readEncoderISR() {
   rotaryEncoder.readEncoder_ISR();
@@ -72,11 +72,12 @@ void setup() {
   tft.drawRGBBitmap(0, 0, Plan_Bee_Logo_ALIVE, BEE_WIDTH,BEE_HEIGHT);
   delay(1000);
   
-  ina226.init();
-  ina226.setAverage(AVERAGE_1024); 
-  ina226.setConversionTime(CONV_TIME_140); 
-  ina226.setMeasureMode(TRIGGERED); 
-  ina226.setCurrentRange(MA_800); 
+  ina226batt.init();
+  ina226batt.setAverage(AVERAGE_128); 
+  ina226batt.setConversionTime(CONV_TIME_8244); 
+  ina226batt.setMeasureMode(TRIGGERED); 
+  ina226batt.setCurrentRange(MA_800); 
+  ina226batt.setCorrectionFactor(0.72); 
   menu();
 
   Serial.println(active_state);
@@ -86,6 +87,7 @@ void loop() {
   if (active_state == true){
     if (rotaryEncoder.encoderChanged() && menu_state < 5) {
       value = rotaryEncoder.readEncoder();
+      Serial.println(value);
       if (value % 4 == 0) {
         menu_state = 1;
         batt = 1;
@@ -131,12 +133,15 @@ void loop() {
       }
     }
     Serial.println(active_state);
-    ina226.startSingleMeasurement();
-    ina226.readAndClearFlags();
-    shuntVoltage_mV = ina226.getShuntVoltage_mV();
-    busVoltage_V = ina226.getBusVoltage_V();
-    relay(busVoltage_V);
-    Serial.println(busVoltage_V);
+    Serial.print("Start: ");
+    Serial.println(millis());
+    ina226batt.startSingleMeasurement();
+    ina226batt.readAndClearFlags();
+    voltage[0] = ina226batt.getBusVoltage_V(); 
+    relay(voltage[0]);
+    Serial.println(voltage[0]);
+    Serial.print("End: ");
+    Serial.println(millis());
   }
 }
 
@@ -147,6 +152,7 @@ void changemenu() {
   2: main menu with selector on Temperature
   3: main menu with selector on Credits
   4: main menu with selector on Tech Support
+
   7: Battery Info Page
   8: Temperature Page 
   9: Credits Page
@@ -238,33 +244,29 @@ void showbattery(void) {
   else {
     refreshbatt();
   }
-  ina226.startSingleMeasurement();
-  ina226.readAndClearFlags();
-  shuntVoltage_mV = ina226.getShuntVoltage_mV();
-  busVoltage_V = ina226.getBusVoltage_V();
-  current_mA = ina226.getCurrent_mA();
-  power_mW = ina226.getBusPower();
-  loadVoltage_V  = busVoltage_V + (shuntVoltage_mV/1000);
-  float battpercent = ((loadVoltage_V-3.4)/(4.2-3.4))*100;
+  float current[2]; //no. of channels
+  float voltage[2];
+  ina226batt.startSingleMeasurement();
+  ina226batt.readAndClearFlags();
+  current[0] = ina226batt.getCurrent_mA();
+  voltage[0] = ina226batt.getBusVoltage_V();
+  float power0 = ina226batt.getBusPower();
+  float battpercent = ((voltage[0]-3.4)/(4.2-3.4))*100;
   offsettext(0,3);
   tft.println("Battery");
   offsettext(40,2);
   tft.print("Current:");
-  Serial.print("Current:");
-  Serial.println(current_mA, PRINT_DEC_POINTS);
-  tft.println(current_mA, PRINT_DEC_POINTS);
+  tft.println(current[0], PRINT_DEC_POINTS);
   offsetunits(40,2);
   tft.print("mA, ");
   offsettext(70,2);
   tft.print("Voltage:");
-  Serial.print("Voltage:");
-  Serial.println(loadVoltage_V, PRINT_DEC_POINTS);
-  tft.println(loadVoltage_V, PRINT_DEC_POINTS);
+  tft.println(voltage[0], PRINT_DEC_POINTS);
   offsetunits(70,2);
   tft.print("V, ");
   offsettext(100,2);
   tft.print("Power: "); 
-  tft.println(power_mW);
+  tft.println(power0);
   offsetunits(100,2);
   tft.print("mW");
   offsettext(130,2);
