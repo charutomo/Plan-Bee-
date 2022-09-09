@@ -219,11 +219,6 @@ void showbattery(void) {
   currentarray1[index] = ina3221.getCurrent(INA3221_CH1);
   voltagearray1[index] = ina3221.getVoltage(INA3221_CH1);
   numloop++;
-  refreshbatt();
-  tft.setRotation(0);
-  offsettext(0,3);
-  tft.println("Battery");
-  offsettext(40,2);
   if (numloop<10){
       current1 = avgvalue(currentarray1,numloop);
       voltage1 = avgvalue(voltagearray1,numloop);
@@ -238,30 +233,37 @@ void showbattery(void) {
       energy1 = energy(powerarr(currentarray1,voltagearray1));
       battery1 = battpercent(avgvalue(voltagearray1,10));
   }
-  offsettext(40,2);
-  tft.print("Current:");
-  tft.print(current1);
-  tft.println("A");
+  if (numloop%3 == 0){
+    refreshbatt();
+    tft.setRotation(0);
+    offsettext(0,3);
+    tft.println("Battery");
+    
+    offsettext(40,2);
+    tft.print("Current:");
+    tft.print(current1);
+    tft.println("A");
+    
+    offsettext(70,2);
+    tft.print("Voltage:");
+    tft.print(voltage1);
+    tft.println("V");
+    
+    offsettext(100,2);
+    tft.print("Power:");
+    tft.print(power1);
+    tft.println("W");
   
-  offsettext(70,2);
-  tft.print("Voltage:");
-  tft.print(voltage1);
-  tft.println("V");
+    offsettext(130,2);
+    tft.print("Energy:");
+    tft.print(energy1);
+    tft.println("Ws");
   
-  offsettext(100,2);
-  tft.print("Power:");
-  tft.print(power1);
-  tft.println("W");
-
-  offsettext(130,2);
-  tft.print("Energy:");
-  tft.print(energy1);
-  tft.println("Ws");
-
-  offsettext(160,2);
-  tft.print("Battery Percent:");
-  tft.print(battery1);
-  tft.println("%");
+    offsettext(160,2);
+    tft.print("Battery Percent:");
+    tft.print(battery1);
+    tft.println("%");
+  }
 }
 
 // show the temperature
