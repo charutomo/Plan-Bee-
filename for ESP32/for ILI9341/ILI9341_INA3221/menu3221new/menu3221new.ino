@@ -233,7 +233,7 @@ void showbattery(void) {
       energy1 = energy(powerarr(currentarray1,voltagearray1));
       battery1 = battpercent(avgvalue(voltagearray1,10));
   }
-  if (index == 1){
+  if (numloop%3 == 0){
     refreshbatt();
     tft.setRotation(0);
     offsettext(0,3);
