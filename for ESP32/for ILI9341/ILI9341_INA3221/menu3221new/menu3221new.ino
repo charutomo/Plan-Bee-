@@ -439,7 +439,7 @@ float energy(float powerarr[10]){
    * Function: energy
    * ----------------
    * computes the energy generated through the 10 sample points collected
-   *  avgenergy = sum of 10 respective points * 0.0001 s/point
+   *  avgenergy = sum of 10 respective points * s/point
    *  
    *  powerarr[10]: power array collected by powerarr function
    *  
@@ -449,7 +449,7 @@ float energy(float powerarr[10]){
    */
   float avgenergy = 0;
   for (int i = 0; i <10; i++){
-    avgenergy+= powerarr[i]*0.0001;
+    avgenergy+= powerarr[i]*1;
   }
   return avgenergy;
 }
