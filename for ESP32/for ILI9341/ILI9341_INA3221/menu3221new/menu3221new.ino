@@ -25,7 +25,7 @@
 
 int menu_state = 0;
 int value = 0;
-int batt = 1;
+int batt = 0;
 int temp = 1;
 int cred = 1;
 int tech = 1;
