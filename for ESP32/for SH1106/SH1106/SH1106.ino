@@ -17,6 +17,7 @@ Adafruit_SH1106 display(21, 22);
 #define PRINT_DEC_POINTS  3   
 
 #define SENSOR_PIN  21 // ESP32 pin GPIO21 connected to DS18B20 sensor's DQ pin
+#define BUTTON_PIN 4 // GPIO4 pin connected to button
 
 Beastdevices_INA3221 ina3221(INA3221_ADDR40_GND);
 
@@ -25,6 +26,9 @@ DallasTemperature DS18B20(&oneWire);
 
 float tempC; // temperature in Celsius
 float tempF; // temperature in Fahrenheit
+int clicknum;
+int lastState = HIGH;
+int currentState;    
 
 static const unsigned char PROGMEM logo_bmp[] =
   {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 
@@ -294,154 +298,54 @@ static const unsigned char PROGMEM logodead_bmp[] ={
 void setup() {
   Serial.begin(115200);
   DS18B20.begin();
+  pinMode(BUTTON_PIN, INPUT);
   display.begin(SH1106_SWITCHCAPVCC, 0x3C);
   for (int i = 1; i <= 4; ++i) {
         testdrawbitmap();
         }
 
    // Draw a small bitmap image
-  textdisplay();
-  thanks();
-  temperature();
   ina3221.begin();
   ina3221.reset();
-
   ina3221.setShuntRes(100, 100, 100);
-
 }
 
 void loop() {
-  float current[3];
-  float voltage[3];
+  currentState = digitalRead(BUTTON_PIN);
+  Serial.print(currentState);
+  int index = clicknum%4;
+  switch(index){
+    case 0:
+      showbatt();
+      ifClick();
+      break;
+    case 1:
+      temperature();
+      ifClick();
+      break;
+    case 2:
+      textdisplay();
+      ifClick();
+      break;
+    case 3:
+      tech(); 
+      ifClick();
+      break;
+  }
+  /*if(clicknum%4==0){
+    showbatt();
+  }
+  else if (clicknum%4==1){
+    temperature();
+  }
+  else if (clicknum%4==2){
+    thanks();
+  }
+  else{
+    tech();
+  }*/
 
-  current[0] = ina3221.getCurrent(INA3221_CH1);
-  voltage[0] = ina3221.getVoltage(INA3221_CH1);
-  float power1 = current[0] * voltage[0];
-  float battpercent = ((voltage[0]-3.4)/(4.3-3.4))*100;
-
-  current[1] = ina3221.getCurrent(INA3221_CH2);
-  voltage[1] = ina3221.getVoltage(INA3221_CH2);
-  float power2 = current[1] * voltage[1];
-
-  current[2] = ina3221.getCurrent(INA3221_CH3);
-  voltage[2] = ina3221.getVoltage(INA3221_CH3);
-  float power3 = current[2] * voltage[2];
-
-  Serial.print("Channel 1: ");
-  Serial.print(current[0], PRINT_DEC_POINTS);
-  Serial.print("A, ");
-  Serial.print(voltage[0], PRINT_DEC_POINTS);
-  Serial.print("V, ");
-  Serial.print(power1);
-  Serial.println("W");
-
-  Serial.print("Channel 2: ");
-  Serial.print(current[1], PRINT_DEC_POINTS);
-  Serial.print("A, ");
-  Serial.print(voltage[1], PRINT_DEC_POINTS);
-  Serial.print("V, ");
-  Serial.print(power2);
-  Serial.println("W");
-  Serial.print(battpercent);
-  Serial.println("%");
-  
-  Serial.print("Channel 3: ");
-  Serial.print(current[2], PRINT_DEC_POINTS);
-  Serial.print("A, ");
-  Serial.print(voltage[2], PRINT_DEC_POINTS);
-  Serial.print("V, ");
-  Serial.print(power3);
-  Serial.println("W");
-  delay(1000);
-
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-  display.println("At Batt:");
-  display.print(current[0], PRINT_DEC_POINTS);
-  display.println("A, ");
-  display.print(voltage[0], PRINT_DEC_POINTS);
-  display.println("V, ");
-  display.print(power1);
-  display.println("W");
-  display.display();
-  delay(500);
-
-  /*
-  if (battpercent<0) {
-    display.clearDisplay();
-    display.setTextSize(2);
-    display.setTextColor(WHITE);
-    display.setCursor(0, 0);
-    display.println("Please");
-    display.println("Connect");
-    display.println("To ");
-    display.println("Battery.");
-    display.display();
-    delay(1000);
-   } 
-   
-   else if(battpercent<=10){
-      for (int i = 1; i <= 6; ++i) {
-        lowbatt();
-         }
-      display.clearDisplay();
-      display.setTextSize(2);
-      display.setTextColor(WHITE);
-      display.setCursor(0, 0);
-      display.println("Battery");
-      display.println("Percent:");
-      display.print(battpercent);
-      display.println("%");
-      display.display();
-      delay(1000);
-
-   }
-
-   else{
-    display.clearDisplay();
-    display.setTextSize(2);
-    display.setTextColor(WHITE);
-    display.setCursor(0, 0);
-    display.println("Battery");
-    display.println("Percent:");
-    display.print(battpercent);
-    display.println("%");
-    display.display();
-    delay(1000);
-   }
-   
-
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-  display.println("B4 Batt:");
-  display.print(current[1], PRINT_DEC_POINTS);
-  display.println("A, ");
-  display.print(voltage[1], PRINT_DEC_POINTS);
-  display.println("V, ");
-  display.print(power2);
-  display.println("W");
-  display.display();
-  delay(1000);
-
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-  display.println("Aft FWR:");
-  display.print(current[2], PRINT_DEC_POINTS);
-  display.println("A, ");
-  display.print(voltage[2], PRINT_DEC_POINTS);
-  display.println("V, ");
-  display.print(power3);
-  display.println("W");
-  display.display();
-  delay(1000);
-  */
-  
+  lastState = currentState;
 }
 
 void lowbatt(void){
@@ -480,43 +384,43 @@ void testdrawbitmap(void) {
 
 
 void textdisplay(void){
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-  display.println("Plan Bee");
-  display.println("Group");
-  display.println("Members:");
-  display.display();
-  delay(1000);
-  
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-  display.println("Andy, ");
-  display.println("Jia Woei,");
-  display.println("Jinghui, ");
-  display.display();
-  delay(1000);
-  
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-  display.println("Charissa");
-  display.println("and");
-  display.println("Chermaine");
-  display.display();
-  delay(1000);
-  
-  
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 0);
+    display.clearDisplay();
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(0, 0);
+    display.println("Plan Bee");
+//  display.println("Group");
+//  display.println("Members:");
+//  display.display();
+//  delay(1000);
+//  
+//  display.clearDisplay();
+//  display.setTextSize(2);
+//  display.setTextColor(WHITE);
+//  display.setCursor(0, 0);
+//  display.println("Andy, ");
+//  display.println("Jia Woei,");
+//  display.println("Jinghui, ");
+//  display.display();
+//  delay(1000);
+//  
+//  display.clearDisplay();
+//  display.setTextSize(2);
+//  display.setTextColor(WHITE);
+//  display.setCursor(0, 0);
+//  display.println("Charissa");
+//  display.println("and");
+//  display.println("Chermaine");
+//  display.display();
+//  delay(1000);
+//  
+//  
+//  display.clearDisplay();
+//  display.setTextSize(2);
+//  display.setTextColor(WHITE);
+//  display.setCursor(0, 0);
   display.println("Thanks to");
-  display.println("Tony and");
+  display.println("cdTony and");
   display.println("Qi Jie");
   display.display();
   delay(1000);
@@ -551,4 +455,122 @@ void temperature(void){
   display.println("°F");
   display.display();
   delay(1000);
+}
+
+void showbatt(void){
+  float current[3];
+  float voltage[3];
+  current[0] = ina3221.getCurrent(INA3221_CH1);
+  voltage[0] = ina3221.getVoltage(INA3221_CH1);
+  float power1 = current[0] * voltage[0];
+  float battpercent = ((voltage[0]-3.4)/(4.3-3.4))*100;
+
+  current[1] = ina3221.getCurrent(INA3221_CH2);
+  voltage[1] = ina3221.getVoltage(INA3221_CH2);
+  float power2 = current[1] * voltage[1];
+
+  current[2] = ina3221.getCurrent(INA3221_CH3);
+  voltage[2] = ina3221.getVoltage(INA3221_CH3);
+  float power3 = current[2] * voltage[2];
+
+  display.clearDisplay();
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 0);
+  display.println("At Batt:");
+  display.print(current[0], PRINT_DEC_POINTS);
+  display.println("A, ");
+  display.print(voltage[0], PRINT_DEC_POINTS);
+  display.println("V, ");
+  display.print(power1);
+  display.println("W");
+  display.display();
+  delay(500);
+  
+  if (battpercent<0) {
+    display.clearDisplay();
+    display.setTextColor(WHITE);
+    display.setCursor(0, 0);
+    display.println("Please");
+    display.println("Connect");
+    display.println("To ");
+    display.print("Battery.");
+    display.display();
+    delay(1000);
+   } 
+   
+   else if(battpercent<=10){
+      for (int i = 1; i <= 6; ++i) {
+        lowbatt();
+         }
+      display.clearDisplay();
+      display.setTextColor(WHITE);
+      display.setCursor(0, 0);
+      display.println("Battery");
+      display.println("Percent:");
+      display.print(battpercent);
+      display.println("%");
+      display.display();
+      delay(1000);
+
+   }
+
+   else{
+    display.clearDisplay();
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(0, 0);
+    display.print("Battery");
+    display.print("Percent:");
+    display.print(battpercent);
+    display.print("%");
+    display.display();
+    delay(1000);
+   }
+   
+  /*
+  display.clearDisplay();
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 0);
+  display.println("B4 Batt:");
+  display.print(current[1], PRINT_DEC_POINTS);
+  display.println("A, ");
+  display.print(voltage[1], PRINT_DEC_POINTS);
+  display.println("V, ");
+  display.print(power2);
+  display.println("W");
+  display.display();
+  delay(1000);
+
+  display.clearDisplay();
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 0);
+  display.println("Aft FWR:");
+  display.print(current[2], PRINT_DEC_POINTS);
+  display.println("A, ");
+  display.print(voltage[2], PRINT_DEC_POINTS);
+  display.println("V, ");
+  display.print(power3);
+  display.println("W");
+  display.display();
+  delay(1000);
+  */
+}
+
+void tech(void){
+  display.clearDisplay();
+  display.setTextSize(2);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 0);
+  display.println("Contact us");
+  display.println("at planbee9555@gmail.com");
+  display.display();
+}
+
+void ifClick(void){
+    if (lastState == LOW && currentState == HIGH){
+    clicknum++;
+  }
 }

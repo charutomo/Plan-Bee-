@@ -56,54 +56,38 @@ void setup() {
   ina3221.begin();
   ina3221.reset();
   ina3221.setShuntRes(100, 100, 100);
-  // start the main menu
-  menu();
 }
 
 void loop() {
   currentState = digitalRead(BUTTON_PIN);
-  if (lastState == LOW && currentState == HIGH){
-    clicknum++;
-    batt = 1;
-    temp = 1;
-    cred = 1;
-    tech = 1;
-    }
-    
   int index = clicknum%5;
+  ifClick();
+  Serial.println(currentState);
   switch(index){
     case 0:
-      menu();
-      break;
-    case 1:
       showbattery();
       break;
-    case 2:
+    case 1:
       showtemp();
       break;
-    case 3:
+    case 2:
       credits();
       break;
-    case 4:
+    case 3:
       techsupport();
       break;
   }
+  lastState = currentState;
 }
 
-// menu with no selector
-void menu() {
-  tft.fillScreen(ILI9341_BLACK);
-  tft.setRotation(0);
-  tft.setTextSize(2);
-  tft.setTextColor(ILI9341_YELLOW);
-  tft.setCursor(70, 40);
-  tft.println("Battery Info");
-  tft.setCursor(70, 70);
-  tft.println("Temperature");
-  tft.setCursor(70, 100);
-  tft.println("Credits");
-  tft.setCursor(70, 130);
-  tft.println("Tech Support");
+void ifClick(void){
+ if (lastState == LOW && currentState == HIGH){
+    clicknum++;
+    cred = 1;
+    tech = 1;
+    batt = 1;
+    temp = 1;
+    }
 }
 
 // show the battery value
@@ -133,7 +117,7 @@ void showbattery(void) {
       energy1 = energy(powerarr(currentarray1,voltagearray1));
       battery1 = battpercent(avgvalue(voltagearray1,10));
   }
-  if (numloop%3 == 0){
+  if (numloop%10 == 0){
     refreshbatt();
     tft.setRotation(0);
     offsettext(0,3);
