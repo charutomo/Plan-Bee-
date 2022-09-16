@@ -420,7 +420,7 @@ void textdisplay(void){
 //  display.setTextColor(WHITE);
 //  display.setCursor(0, 0);
   display.println("Thanks to");
-  display.println("Tony and");
+  display.println("cdTony and");
   display.println("Qi Jie");
   display.display();
   delay(1000);
