@@ -313,25 +313,23 @@ void setup() {
 void loop() {
   currentState = digitalRead(BUTTON_PIN);
   Serial.print(currentState);
-  if (lastState == LOW && currentState == HIGH){
-    clicknum++;
-  }
-
   int index = clicknum%4;
   switch(index){
     case 0:
       showbatt();
+      ifClick();
       break;
     case 1:
       temperature();
+      ifClick();
       break;
     case 2:
       textdisplay();
+      ifClick();
       break;
     case 3:
       tech(); 
-      delay(1000);
-      thanks();
+      ifClick();
       break;
   }
   /*if(clicknum%4==0){
@@ -386,41 +384,41 @@ void testdrawbitmap(void) {
 
 
 void textdisplay(void){
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-  display.println("Plan Bee");
-  display.println("Group");
-  display.println("Members:");
-  display.display();
-  delay(1000);
-  
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-  display.println("Andy, ");
-  display.println("Jia Woei,");
-  display.println("Jinghui, ");
-  display.display();
-  delay(1000);
-  
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-  display.println("Charissa");
-  display.println("and");
-  display.println("Chermaine");
-  display.display();
-  delay(1000);
-  
-  
-  display.clearDisplay();
-  display.setTextSize(2);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 0);
+    display.clearDisplay();
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(0, 0);
+    display.println("Plan Bee");
+//  display.println("Group");
+//  display.println("Members:");
+//  display.display();
+//  delay(1000);
+//  
+//  display.clearDisplay();
+//  display.setTextSize(2);
+//  display.setTextColor(WHITE);
+//  display.setCursor(0, 0);
+//  display.println("Andy, ");
+//  display.println("Jia Woei,");
+//  display.println("Jinghui, ");
+//  display.display();
+//  delay(1000);
+//  
+//  display.clearDisplay();
+//  display.setTextSize(2);
+//  display.setTextColor(WHITE);
+//  display.setCursor(0, 0);
+//  display.println("Charissa");
+//  display.println("and");
+//  display.println("Chermaine");
+//  display.display();
+//  delay(1000);
+//  
+//  
+//  display.clearDisplay();
+//  display.setTextSize(2);
+//  display.setTextColor(WHITE);
+//  display.setCursor(0, 0);
   display.println("Thanks to");
   display.println("Tony and");
   display.println("Qi Jie");
@@ -488,16 +486,15 @@ void showbatt(void){
   display.println("W");
   display.display();
   delay(500);
-
+  
   if (battpercent<0) {
     display.clearDisplay();
-    display.setTextSize(2);
     display.setTextColor(WHITE);
     display.setCursor(0, 0);
     display.println("Please");
     display.println("Connect");
     display.println("To ");
-    display.println("Battery.");
+    display.print("Battery.");
     display.display();
     delay(1000);
    } 
@@ -507,7 +504,6 @@ void showbatt(void){
         lowbatt();
          }
       display.clearDisplay();
-      display.setTextSize(2);
       display.setTextColor(WHITE);
       display.setCursor(0, 0);
       display.println("Battery");
@@ -524,10 +520,10 @@ void showbatt(void){
     display.setTextSize(2);
     display.setTextColor(WHITE);
     display.setCursor(0, 0);
-    display.println("Battery");
-    display.println("Percent:");
+    display.print("Battery");
+    display.print("Percent:");
     display.print(battpercent);
-    display.println("%");
+    display.print("%");
     display.display();
     delay(1000);
    }
@@ -571,4 +567,10 @@ void tech(void){
   display.println("Contact us");
   display.println("at planbee9555@gmail.com");
   display.display();
+}
+
+void ifClick(void){
+    if (lastState == LOW && currentState == HIGH){
+    clicknum++;
+  }
 }
