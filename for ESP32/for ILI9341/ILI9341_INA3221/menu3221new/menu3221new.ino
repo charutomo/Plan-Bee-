@@ -25,10 +25,15 @@
 
 int menu_state = 0;
 int value = 0;
-int batt = 1;
+int batt = 0;
 int temp = 1;
 int cred = 1;
 int tech = 1;
+float current1;
+float voltage1;
+float power1;
+float battery1;
+float energy1;
 float tempC; 
 float tempF;
 float currentarray1[10];
@@ -207,81 +212,57 @@ void showbattery(void) {
     refreshorig();
     batt = 0;
   }
-  offsettext(40,2);
-  tft.println();
-  if (numloop<10){
   float current[3];
   float voltage[3];
 
-  Serial.println(numloop);
-  current[0] = ina3221.getCurrent(INA3221_CH1);
-  currentarray1[numloop] = ina3221.getCurrent(INA3221_CH1);
-  voltage[0] = ina3221.getVoltage(INA3221_CH1);
-  voltagearray1[numloop] = ina3221.getVoltage(INA3221_CH1);
-
-  Serial.print("Channel 1: ");
-  Serial.print(current[0], PRINT_DEC_POINTS);
-  Serial.print("A, ");
-  Serial.print(voltage[0], PRINT_DEC_POINTS);
-  Serial.println("V");
-  Serial.println();
-
-  Serial.print("Current Array:");
-  for (int i = 0; i < 10; i = i + 1) {
-    Serial.print(currentarray1[i]);
-    Serial.print(", ");
+  int index = numloop%10;
+  currentarray1[index] = ina3221.getCurrent(INA3221_CH1);
+  voltagearray1[index] = ina3221.getVoltage(INA3221_CH1);
+  numloop++;
+  if (numloop<10){
+      current1 = avgvalue(currentarray1,numloop);
+      voltage1 = avgvalue(voltagearray1,numloop);
+      power1 = avgvalue(powerarr(currentarray1,voltagearray1),numloop);
+      energy1 = energy(powerarr(currentarray1,voltagearray1));
+      battery1 = battpercent(avgvalue(voltagearray1,numloop));
   }
-  
-  Serial.println();
-  Serial.print("Voltage Array:");
-  for (int i = 0; i < 10; i = i + 1) {
-    Serial.print(voltagearray1[i]);
-    Serial.print(", ");
+  else{
+      current1 = avgvalue(currentarray1,10);
+      voltage1 = avgvalue(voltagearray1,10);
+      power1 = avgvalue(powerarr(currentarray1,voltagearray1),10);
+      energy1 = energy(powerarr(currentarray1,voltagearray1));
+      battery1 = battpercent(avgvalue(voltagearray1,10));
   }
-  Serial.println();
-  numloop+=1;
-  delay(0.001);
-  }
-  else if(numloop == 10){
+  if (numloop%3 == 0){
     refreshbatt();
     tft.setRotation(0);
     offsettext(0,3);
     tft.println("Battery");
+    
     offsettext(40,2);
-    Serial.print("Current:");
-    Serial.println(avgvalue(currentarray1,numloop));
     tft.print("Current:");
-    tft.print(avgvalue(currentarray1,numloop));
+    tft.print(current1);
     tft.println("A");
+    
     offsettext(70,2);
-    Serial.print("Voltage:");
-    Serial.println(avgvalue(voltagearray1,numloop));
     tft.print("Voltage:");
-    tft.print(avgvalue(voltagearray1,numloop));
+    tft.print(voltage1);
     tft.println("V");
+    
     offsettext(100,2);
-    Serial.print("Power:");
-    Serial.println(avgvalue(powerarr(currentarray1,voltagearray1),numloop));
     tft.print("Power:");
-    tft.print(avgvalue(powerarr(currentarray1,voltagearray1),numloop));
+    tft.print(power1);
     tft.println("W");
+  
     offsettext(130,2);
-    Serial.print("Energy:");
-    Serial.println(energy(powerarr(currentarray1,voltagearray1)));
     tft.print("Energy:");
-    tft.print(energy(powerarr(currentarray1,voltagearray1)));
+    tft.print(energy1);
     tft.println("Ws");
+  
     offsettext(160,2);
     tft.print("Battery Percent:");
-    tft.print(battpercent(avgvalue(voltagearray1,numloop)));
+    tft.print(battery1);
     tft.println("%");
-    numloop=0;
-    for (int i=0; i<10; i++){
-      currentarray1[i]=0;
-      voltagearray1[i]=0;
-    delay(1000);
-    Serial.println("New Loop");
-  }
   }
 }
 
@@ -458,7 +439,7 @@ float energy(float powerarr[10]){
    * Function: energy
    * ----------------
    * computes the energy generated through the 10 sample points collected
-   *  avgenergy = sum of 10 respective points * 0.0001 s/point
+   *  avgenergy = sum of 10 respective points * s/point
    *  
    *  powerarr[10]: power array collected by powerarr function
    *  
@@ -468,7 +449,7 @@ float energy(float powerarr[10]){
    */
   float avgenergy = 0;
   for (int i = 0; i <10; i++){
-    avgenergy+= powerarr[i]*0.0001;
+    avgenergy+= powerarr[i]*1;
   }
   return avgenergy;
 }

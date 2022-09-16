@@ -59,6 +59,14 @@ INA226 Current and Voltage Sensor
 |ALERT			|25			    |
 <br/>
 
+Button
+<br/>
+|Button		|Type of Pin on ESP32 |
+| :--------------:|:--------:		    |
+|VCC					|3v3	 	          |
+|Digital Pin			|4       		    |
+<br/>
+
 
 
 

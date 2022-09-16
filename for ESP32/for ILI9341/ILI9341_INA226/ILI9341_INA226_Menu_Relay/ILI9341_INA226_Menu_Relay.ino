@@ -32,7 +32,7 @@ float current_mA = 0.0;
 float power_mW = 0.0; 
 int menu_state = 0;
 int value = 0;
-int batt = 1;
+int batt = 0;
 int temp = 1;
 int cred = 1;
 int tech = 1;
@@ -407,7 +407,7 @@ void refreshbatt(void){
    * for refreshing page on battery screen before showing new values
    * 
    */
-  tft.fillRect(135,40,80,50,ILI9341_BLACK);
+  tft.fillRect(135,40,80,60,ILI9341_BLACK);
   tft.fillRect(110,100,100,20,ILI9341_BLACK);
   tft.fillRect(40,160,90,30,ILI9341_BLACK);
 }
