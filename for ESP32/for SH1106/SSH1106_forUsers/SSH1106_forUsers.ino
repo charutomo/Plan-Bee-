@@ -325,19 +325,21 @@ void loop() {
   int index = clicknum%4;
   ifClick();
   switch(index){
+    /*
     case 0:
       custom();
       break;
-    case 1:
+    */
+    case 0:
       showbatt();
       break;
-    case 2:
+    case 1:
       temperature();
       break;
-    case 3:
+    case 2:
       textdisplay();
       break;
-    case 4:
+    case 3:
       tech(); 
       break;
   }
