@@ -433,8 +433,8 @@ void showbatt(void){
     delay(1000);
    } 
    
-   else if(battery1<=10 & battery1>=0){
-      for (int i = 1; i <= 6; ++i) {
+   else if(battery1<=10 && battery1>=0){
+      for (int i = 1; i <= 2; ++i) {
         lowbatt();
          }
       refresh();
