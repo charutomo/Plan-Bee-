@@ -1,5 +1,5 @@
 #include "SPI.h"
-#include "Adafruit_ILI9341.h"
+#include <TFT_eSPI.h>
 #include "Arduino.h"
 #include "Bee.h"
 #include <Wire.h>
@@ -36,26 +36,31 @@ int temp = 1;
 int cred = 1;
 int tech = 1;
 int numloop = 0;
+unsigned long drawTime = 0;
 
 Beastdevices_INA3221 ina3221(INA3221_ADDR40_GND); 
 
 OneWire oneWire(SENSOR_PIN);
 DallasTemperature DS18B20(&oneWire);
-Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, TFT_MOSI, TFT_CLK, TFT_RST, TFT_MISO);
+TFT_eSPI tft = TFT_eSPI(); 
 
 void setup() {
   Serial.begin(115200);
   // initialise the screen
   tft.begin();
   DS18B20.begin();
-  tft.fillScreen(ILI9341_WHITE);
+//  tft.fillScreen(ILI9341_WHITE);
   tft.setRotation(0);
-  tft.drawRGBBitmap(0, 0, Plan_Bee_Logo_ALIVE, BEE_WIDTH,BEE_HEIGHT);
+//  tft.drawBitmap(0, 0, Plan_Bee_Logo_ALIVE, BEE_WIDTH,BEE_HEIGHT);
+  tft.setFreeFont(FF33);
   
   // initialise INA3221
   ina3221.begin();
   ina3221.reset();
   ina3221.setShuntRes(100, 100, 100);
+
+//  tft.setCursor(40, 100);
+//  tft.setTextPadding(100);
 }
 
 void loop() {
@@ -100,8 +105,8 @@ void showbattery(void) {
   float voltage[3];
 
   int index = numloop%10;
-  currentarray1[index] = ina3221.getCurrent(INA3221_CH1);
-  voltagearray1[index] = ina3221.getVoltage(INA3221_CH1);
+  current1 = ina3221.getCurrent(INA3221_CH1);
+  voltage1 = ina3221.getVoltage(INA3221_CH1);
   numloop++;
   if (numloop<10){
       current1 = avgvalue(currentarray1,numloop);
@@ -113,12 +118,11 @@ void showbattery(void) {
   else{
       current1 = avgvalue(currentarray1,10);
       voltage1 = avgvalue(voltagearray1,10);
-      power1 = avgvalue(powerarr(currentarray1,voltagearray1),10);
+      power1 = numloop;
       energy1 = energy(powerarr(currentarray1,voltagearray1));
       battery1 = battpercent(avgvalue(voltagearray1,10));
   }
   if (numloop%10 == 0){
-    refreshbatt();
     tft.setRotation(0);
     offsettext(0,3);
     tft.println("Battery");
@@ -131,11 +135,12 @@ void showbattery(void) {
     offsettext(70,2);
     tft.print("Voltage:");
     tft.print(voltage1);
-    tft.println("V");
+    tft.print("V");
     
     offsettext(100,2);
-    tft.print("Power:");
-    tft.print(power1);
+    tft.setCursor(40, 100);
+    tft.setTextPadding(100);
+    tft.drawFloat(numloop, 1, 40, 100);
     tft.println("W");
   
     offsettext(130,2);
@@ -219,11 +224,11 @@ void offsettext(int y, int font){
    * 
    * y: y-axis value to be input for printing text
    * font: font size of the text to be printed on display
-   * 
+   *
    */
   tft.setCursor(40, y);
-  tft.setTextColor(ILI9341_YELLOW);
-  tft.setTextSize(font);
+  tft.setTextColor(TFT_YELLOW, TFT_BLACK);
+  //tft.setTextSize(font);
 }
 
 void offsetdegrees(int y){
