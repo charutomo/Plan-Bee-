@@ -58,6 +58,7 @@ These are libraries imported:
 
 ### Display Screen
 * [Adafruit ILI9341](https://github.com/adafruit/Adafruit_ILI9341)
+* [ESP32-SH1106-OLED](https://github.com/nhatuan84/esp32-sh1106-oled)
 * [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
 
 ### Temperature Sensor
