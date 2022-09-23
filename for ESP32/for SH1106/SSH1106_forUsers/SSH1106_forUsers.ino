@@ -356,7 +356,7 @@ void lowbatt(void){
   delay(500);
   display.clearDisplay();
   display.display();
-  delay(500);
+  delay(200);
 }
 
 
@@ -382,7 +382,7 @@ void testdrawbitmap(void) {
 
 void textdisplay(void){
     refresh();
-    display.println("By Plan Bee");
+    display.println("Plan Bee");
     display.println("Thanks to");
     display.println("Tony & QJ");
     display.display();
@@ -414,12 +414,12 @@ void showbatt(void){
   numloop++;
   if (numloop<10){
     power1 = avgvalue(powerarr(currentarray1,voltagearray1),numloop);
-    energy1 = energy(powerarr(currentarray1,voltagearray1));
+    energy1 += energy(powerarr(currentarray1,voltagearray1));
     battery1 = battpercent(avgvalue(voltagearray1,numloop));
   }
   else{
     power1 = avgvalue(powerarr(currentarray1,voltagearray1),10);
-    energy1 = energy(powerarr(currentarray1,voltagearray1));
+    energy1 += energy(powerarr(currentarray1,voltagearray1));
     battery1 = battpercent(avgvalue(voltagearray1,10));
   }
 
@@ -433,7 +433,7 @@ void showbatt(void){
     delay(1000);
    } 
    
-   else if(battery1<=10){
+   else if(battery1<=10 & battery1>=0){
       for (int i = 1; i <= 6; ++i) {
         lowbatt();
          }
@@ -457,7 +457,7 @@ void showbatt(void){
       display.print(power1);
       display.println("W");
       display.print(energy1);
-      display.println("Ws")
+      display.println("Ws");
       display.display();
       delay(1000);
    }
@@ -465,7 +465,8 @@ void showbatt(void){
 
 void tech(void){
   refresh();
-  display.println("Contact us at planbee9555@gmail.com");
+  display.println("Contact us");
+  display.println("at planbee9555@gmail.com");
   display.display();
 }
 
@@ -547,7 +548,7 @@ float energy(float powerarr[10]){
    */
   float avgenergy = 0;
   for (int i = 0; i <10; i++){
-    avgenergy+= powerarr[i]*0.0001;
+    avgenergy+= powerarr[i]*1;
   }
   return avgenergy;
 }
