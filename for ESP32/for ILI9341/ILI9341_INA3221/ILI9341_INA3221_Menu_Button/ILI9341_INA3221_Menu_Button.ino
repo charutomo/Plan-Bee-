@@ -17,8 +17,8 @@
 #define PRINT_DEC_POINTS  3  
 #define SENSOR_PIN  0
 #define BUTTON_PIN 4 // GPIO4 pin connected to button
-#define TFT_WIDTH 240
-#define TFT_HEIGHT  320
+//#define TFT_WIDTH 240
+//#define TFT_HEIGHT  320
 
 float current1;
 float voltage1;
@@ -51,7 +51,7 @@ void setup() {
   // initialise the screen
   tft.begin();
   DS18B20.begin();
-//  tft.fillScreen(ILI9341_WHITE);
+  tft.fillScreen(ILI9341_WHITE);
   tft.setRotation(3);
 //  tft.drawBitmap(0, 0, Plan_Bee_Logo_ALIVE, BEE_WIDTH,BEE_HEIGHT);
   tft.setFreeFont(FF33);
@@ -168,6 +168,7 @@ void showbattery(void) {
     //tft.print(battery1);
     tft.setCursor(180, 160);
     tft.println("%");
+    tft.setCursor(300, 160);
   }
 }
 
@@ -249,7 +250,7 @@ void offsettext(int y, int font){
    *
    */
   tft.setCursor(40, y);
-  tft.setTextColor(ILI9341_YELLOW, ILI9341_BLACK);
+  tft.setTextColor(TFT_YELLOW, ILI9341_BLACK);
   //tft.setTextSize(font);
 }
 
@@ -263,7 +264,7 @@ void offsetdegrees(int y){
    * 
    */
   tft.setCursor(100, y);
-  tft.setTextColor(ILI9341_YELLOW);
+  tft.setTextColor(TFT_YELLOW);
   //tft.setTextSize(1);
   tft.println("o");
 }
