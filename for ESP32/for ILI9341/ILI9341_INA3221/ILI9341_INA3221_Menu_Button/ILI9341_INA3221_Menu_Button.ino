@@ -8,7 +8,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-#define TFT_CLK 32
+#define TFT_SCLK 32
 #define TFT_MOSI 33
 #define TFT_MISO 12
 #define TFT_CS 27
@@ -50,7 +50,7 @@ void setup() {
   tft.begin();
   DS18B20.begin();
 //  tft.fillScreen(ILI9341_WHITE);
-  tft.setRotation(0);
+  tft.setRotation(1);
 //  tft.drawBitmap(0, 0, Plan_Bee_Logo_ALIVE, BEE_WIDTH,BEE_HEIGHT);
   tft.setFreeFont(FF33);
   
@@ -65,7 +65,7 @@ void setup() {
 
 void loop() {
   currentState = digitalRead(BUTTON_PIN);
-  int index = clicknum%5;
+  int index = clicknum%4;
   ifClick();
   Serial.println(currentState);
   switch(index){
@@ -118,7 +118,7 @@ void showbattery(void) {
   else{
       current1 = avgvalue(currentarray1,10);
       voltage1 = avgvalue(voltagearray1,10);
-      power1 = numloop;
+      power1 = avgvalue(powerarr(currentarray1,voltagearray1),10);
       energy1 = energy(powerarr(currentarray1,voltagearray1));
       battery1 = battpercent(avgvalue(voltagearray1,10));
   }
@@ -129,28 +129,43 @@ void showbattery(void) {
     
     offsettext(40,2);
     tft.print("Current:");
-    tft.print(current1);
+    //tft.print(current1);
+    tft.setTextPadding(100);
+    tft.drawFloat(current1, 3, 110, 27);
+    tft.setCursor(180, 40);
     tft.println("A");
     
     offsettext(70,2);
     tft.print("Voltage:");
-    tft.print(voltage1);
+    //tft.print(voltage1);
+    tft.setTextPadding(100);
+    tft.drawFloat(voltage1, 3, 110, 63);
+    tft.setCursor(180, 70);
     tft.print("V");
     
-    offsettext(100,2);
+    //offsettext(100,2);
     tft.setCursor(40, 100);
+    tft.print("Power:");
     tft.setTextPadding(100);
-    tft.drawFloat(numloop, 1, 40, 100);
+    //tft.drawFloat(power1, 1, 100, 87);
+    tft.drawFloat(power1, 3, 110, 89);
+    tft.setCursor(180, 100);
     tft.println("W");
   
     offsettext(130,2);
     tft.print("Energy:");
-    tft.print(energy1);
+    //tft.print(energy1);
+    tft.setTextPadding(100);
+    tft.drawFloat(energy1, 3, 110, 117);
+    tft.setCursor(180, 130);
     tft.println("Ws");
   
     offsettext(160,2);
-    tft.print("Battery Percent:");
-    tft.print(battery1);
+    tft.print("Battery %:");
+    tft.setTextPadding(100);
+    tft.drawFloat(battery1, 3, 120, 147);
+    //tft.print(battery1);
+    tft.setCursor(180, 160);
     tft.println("%");
   }
 }
@@ -172,11 +187,16 @@ void showtemp(void) {
   tempF = tempC * 9 / 5 + 32;
   offsetdegrees(30);
   offsettext(40,2);
-  tft.print(tempC);
+  tft.setTextPadding(100);
+  tft.drawFloat(tempC, 2, 40, 27);
+  //tft.print(tempC);
+  tft.setCursor(110, 40);
   tft.println(" C");
   offsetdegrees(60);
   offsettext(70,2);
-  tft.print(tempF);
+  tft.setTextPadding(100);
+  tft.drawFloat(tempF, 2, 40, 67);
+  tft.setCursor(110, 70);
   tft.println(" F");
 }
 
@@ -227,7 +247,7 @@ void offsettext(int y, int font){
    *
    */
   tft.setCursor(40, y);
-  tft.setTextColor(TFT_YELLOW, TFT_BLACK);
+  tft.setTextColor(ILI9341_YELLOW, ILI9341_BLACK);
   //tft.setTextSize(font);
 }
 
@@ -242,7 +262,7 @@ void offsetdegrees(int y){
    */
   tft.setCursor(100, y);
   tft.setTextColor(ILI9341_YELLOW);
-  tft.setTextSize(1);
+  //tft.setTextSize(1);
   tft.println("o");
 }
 
