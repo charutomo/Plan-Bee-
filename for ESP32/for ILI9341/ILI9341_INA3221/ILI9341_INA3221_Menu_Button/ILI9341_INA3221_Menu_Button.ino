@@ -17,6 +17,8 @@
 #define PRINT_DEC_POINTS  3  
 #define SENSOR_PIN  0
 #define BUTTON_PIN 4 // GPIO4 pin connected to button
+#define TFT_WIDTH 240
+#define TFT_HEIGHT  320
 
 float current1;
 float voltage1;
@@ -50,7 +52,7 @@ void setup() {
   tft.begin();
   DS18B20.begin();
 //  tft.fillScreen(ILI9341_WHITE);
-  tft.setRotation(1);
+  tft.setRotation(3);
 //  tft.drawBitmap(0, 0, Plan_Bee_Logo_ALIVE, BEE_WIDTH,BEE_HEIGHT);
   tft.setFreeFont(FF33);
   
@@ -58,9 +60,8 @@ void setup() {
   ina3221.begin();
   ina3221.reset();
   ina3221.setShuntRes(100, 100, 100);
+  tft.fillScreen(ILI9341_BLACK);
 
-//  tft.setCursor(40, 100);
-//  tft.setTextPadding(100);
 }
 
 void loop() {
@@ -124,7 +125,7 @@ void showbattery(void) {
   }
   if (numloop%10 == 0){
     tft.setRotation(0);
-    offsettext(0,3);
+    offsettext(10,3);
     tft.println("Battery");
     
     offsettext(40,2);
@@ -173,13 +174,13 @@ void showbattery(void) {
 // show the temperature
 void showtemp(void) {
   if (temp ==1){
-    tft.fillScreen(ILI9341_BLACK);;
+    tft.fillScreen(ILI9341_BLACK);
     temp = 0;
   }
   else{
     refreshtemp();
   }
-  offsettext(0,3);
+  offsettext(10,3);
   tft.println("Temperature");
   tft.println();
   DS18B20.requestTemperatures();       
@@ -188,16 +189,17 @@ void showtemp(void) {
   offsetdegrees(30);
   offsettext(40,2);
   tft.setTextPadding(100);
-  tft.drawFloat(tempC, 2, 40, 27);
+  tft.drawFloat(tempC, 2, 40, 37);
   //tft.print(tempC);
-  tft.setCursor(110, 40);
+  tft.setCursor(110, 50);
   tft.println(" C");
   offsetdegrees(60);
   offsettext(70,2);
   tft.setTextPadding(100);
-  tft.drawFloat(tempF, 2, 40, 67);
-  tft.setCursor(110, 70);
+  tft.drawFloat(tempF, 2, 40, 77);
+  tft.setCursor(110, 80);
   tft.println(" F");
+  delay(300);
 }
 
 // show the credits
@@ -206,7 +208,7 @@ void credits(void) {
     tft.fillScreen(ILI9341_BLACK);
     cred = 0;
   }
-  offsettext(0,3);
+  offsettext(10,3);
   tft.println("Credits");
   tft.println();
   offsettext(30,2);
@@ -228,7 +230,7 @@ void techsupport(void){
     tft.fillScreen(ILI9341_BLACK);
     tech = 0;
   }
-  offsettext(0,3);
+  offsettext(10,3);
   tft.println("Tech Support");
   offsettext(40,2);
   tft.println("Email Address:");
