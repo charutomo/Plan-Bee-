@@ -123,12 +123,8 @@ These are libraries imported:
 
 ### Display Screen
 * [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
-<br>
-Conferred from:
 * [Adafruit ILI9341](https://github.com/adafruit/Adafruit_ILI9341)
 * [ESP32-SH1106-OLED](https://github.com/nhatuan84/esp32-sh1106-oled)
-<br>
-The above two libraries are modified so please utilise the following folder below to import the modified libraries.
 * [Modified Libraries](https://github.com/charutomo/Plan-Bee-/tree/main/modified%20libraries/)
 
 ### Temperature Sensor
@@ -156,22 +152,29 @@ Currently, we use the following items for the functions:
 
 1. Clone this repository into your working station, key in the following command in CMD(Windows) or Terminal(Mac or Linux). 
 
+
 For Windows/Mac, to save the repository content into a folder in Desktop: 
 
 ```
 cd Desktop
+```
 
+Followed by 
+
+```
 git clone https://github.com/charutomo/Plan-Bee-
-
 ```
 
 For Linux, to save the repository content into a folder in Desktop: 
 
 ```
 $ ls Desktop
+```
 
+Followed by 
+
+```
 $ git clone https://github.com/charutomo/Plan-Bee-
-
 ```
 
 2. Install Arduino IDE(if you haven't) and download the [libraries](#libraries) to have the full features.
