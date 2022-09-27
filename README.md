@@ -23,8 +23,11 @@ for Arduino Uno and ESP32-WROOM-32D respectively. More Information can be found 
 <br>
 
 ## Content Of Repository 
-Listed below are the current codes for `Plan Bee`: 
+Listed below are the current codes for `Plan Bee `: 
 
+### Hyperlinks to the respective folders
+Click to view the table of content
+<br>
 <details>
 	<summary>Table of Content</summary>
 
@@ -44,8 +47,70 @@ Listed below are the current codes for `Plan Bee`:
 	
 	* [for SSD1306](https://github.com/charutomo/Plan-Bee-/blob/main/for%20ESP32/for%20SSD1306/INA3221_works)
 
+* [Modified Libraries](https://github.com/charutomo/Plan-Bee-/tree/main/modified%20libraries)
+	* [Adafruit_ILI9341](https://github.com/charutomo/Plan-Bee-/tree/main/modified%20libraries/Adafruit_ILI9341)
+
+	* [TFT_eSPI](https://github.com/charutomo/Plan-Bee-/tree/main/modified%20libraries/TFT_eSPI)
+
+
 * [image](https://github.com/charutomo/Plan-Bee-/blob/main/image)
+
+
 </details>
+
+### Structure of repository
+
+The structure of `Plan Bee ` repository is as such:
+
+```
+Plan Bee 
+│	README.md
+│	LICENSE
+│
+├───	PCB Design
+│	├─── PCB Main V1
+│	├─── PCB Main V2
+│	└─── PCB Main V3
+│
+├───	For Arduino
+│	├─── INA226 for arduino uno
+│	├─── INA3221 for arduino uno
+│	├─── LED
+│	└─── Voltage and Current sensor using ACS712 and potentiometer
+│
+├─── For ESP32
+│	├─── for ILI9341
+│	│    ├─── ILI9341_INA226
+│	│    ├─── ILI9341_INA3221
+│	│    ├─── graphictestILI9341
+│	│    ├─── printextILI9341
+│	│    └─── README.md
+│	│
+│	├─── for SH1106
+│	│    ├─── SH1106 (using INA3221 and general use)
+│	│    ├─── SH1106_forUsers (using INA3221 and for users)
+│	│    └─── README.md
+│	│
+│	├─── for SSD1306
+│	│    └───  INA3221_works
+│	│
+│	└─── intermediate
+│	     ├─── Temperature
+│	     └─── switch
+│
+├─── image
+│	├─── Plan Bee Logo (ALIVE).png
+│	├─── Plan Bee Logo (DEAD).png
+│	├─── bee.jpg
+│	└─── pinout.jpg
+│
+├─── modified libraries
+│	├─── Adafruit_ILI9341
+│	└─── TFT_eSPI
+│
+
+```
+
 
 <br>
 
@@ -58,9 +123,11 @@ These are libraries imported:
 
 ### Display Screen
 * [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
+<br>
 Conferred from:
 * [Adafruit ILI9341](https://github.com/adafruit/Adafruit_ILI9341)
 * [ESP32-SH1106-OLED](https://github.com/nhatuan84/esp32-sh1106-oled)
+<br>
 The above two libraries are modified so please utilise the following folder below to import the modified libraries.
 * [Modified Libraries](https://github.com/charutomo/Plan-Bee-/tree/main/modified%20libraries/)
 
@@ -81,8 +148,39 @@ Currently, we use the following items for the functions:
 |Temperature Sensor	| DS18B20	 	|	-	  |	-	   |
 |Encoder			| HW040	 	|	-	  |	-	   |
 |Relay			|SRD-05VDC-SL-C	| 	-	  |	-	   |
+|Button			|Tactile Push Button|	-	  |	-	   |
 
 <br>
+
+## Getting started
+
+1. Clone this repository into your working station, key in the following command in CMD(Windows) or Terminal(Mac or Linux). 
+
+For Windows/Mac, to save the repository content into a folder in Desktop: 
+
+```
+cd Desktop
+
+git clone https://github.com/charutomo/Plan-Bee-
+
+```
+
+For Linux, to save the repository content into a folder in Desktop: 
+
+```
+$ ls Desktop
+
+$ git clone https://github.com/charutomo/Plan-Bee-
+
+```
+
+2. Install Arduino IDE(if you haven't) and download the [libraries](#libraries) to have the full features.
+
+
+3. You can start upload code from the repository to test out.
+
+<br>
+
 
 ## Acknowledgement
 Special thanks to Tony and Qi Jie for their guidance throughout the whole project of `Plan Bee`.
