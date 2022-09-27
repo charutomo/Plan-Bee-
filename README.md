@@ -57,13 +57,15 @@ These are libraries imported:
 * [INA226_WE](https://github.com/wollewald/INA226_WE)
 
 ### Display Screen
+* [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
+Conferred from:
 * [Adafruit ILI9341](https://github.com/adafruit/Adafruit_ILI9341)
 * [ESP32-SH1106-OLED](https://github.com/nhatuan84/esp32-sh1106-oled)
-* [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
+The above two libraries are modified so please utilise the following folder below to import the modified libraries.
+* [Modified Libraries](https://github.com/charutomo/Plan-Bee-/tree/main/modified%20libraries/)
 
 ### Temperature Sensor
 * [DallasTemperature](https://github.com/vlast3k/Arduino-libraries/tree/master/DallasTemperature)
-
 
 ### Encoder
 * [Ai Esp32 Rotary Encoder](https://github.com/igorantolic/ai-esp32-rotary-encoder)
@@ -84,6 +86,11 @@ Currently, we use the following items for the functions:
 
 ## Acknowledgement
 Special thanks to Tony and Qi Jie for their guidance throughout the whole project of `Plan Bee`.
+
+<br>
+
+## Further enquiries
+Please direct your enquiries to planbee9555@gmail.com or under the issues section.
 
 <br>
 
