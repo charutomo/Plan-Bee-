@@ -125,50 +125,44 @@ void showbattery(void) {
   }
   if (numloop%10 == 0){
     tft.setRotation(0);
-    offsettext(10,3);
+    offsettext(20);
     tft.println("Battery");
     
-    offsettext(40,2);
+    offsettext(60);
     tft.print("Current:");
-    //tft.print(current1);
     tft.setTextPadding(100);
-    tft.drawFloat(current1, 3, 110, 27);
-    tft.setCursor(180, 40);
+    tft.drawFloat(current1, 3, 150, 47);
+    tft.setCursor(230, 60);
     tft.println("A");
     
-    offsettext(70,2);
+    offsettext(100);
     tft.print("Voltage:");
-    //tft.print(voltage1);
     tft.setTextPadding(100);
-    tft.drawFloat(voltage1, 3, 110, 63);
-    tft.setCursor(180, 70);
+    tft.drawFloat(voltage1, 3, 150, 83);
+    tft.setCursor(230, 100);
     tft.print("V");
     
-    //offsettext(100,2);
-    tft.setCursor(40, 100);
+    offsettext(140);
     tft.print("Power:");
     tft.setTextPadding(100);
-    //tft.drawFloat(power1, 1, 100, 87);
-    tft.drawFloat(power1, 3, 110, 89);
-    tft.setCursor(180, 100);
+    tft.drawFloat(power1, 3, 150, 129);
+    tft.setCursor(230, 140);
     tft.println("W");
   
-    offsettext(130,2);
+    offsettext(180);
     tft.print("Energy:");
     //tft.print(energy1);
     tft.setTextPadding(100);
-    tft.drawFloat(energy1, 3, 110, 117);
-    tft.setCursor(180, 130);
+    tft.drawFloat(energy1, 3, 150, 167);
+    tft.setCursor(230, 180);
     tft.println("Ws");
   
-    offsettext(160,2);
+    offsettext(220);
     tft.print("Battery %:");
     tft.setTextPadding(100);
-    tft.drawFloat(battery1, 3, 120, 147);
-    //tft.print(battery1);
-    tft.setCursor(180, 160);
+    tft.drawFloat(battery1, 2, 150, 207);
+    tft.setCursor(230, 220);
     tft.println("%");
-    tft.setCursor(300, 160);
   }
 }
 
@@ -181,24 +175,24 @@ void showtemp(void) {
   else{
     refreshtemp();
   }
-  offsettext(10,3);
+  offsettext(20);
   tft.println("Temperature");
   tft.println();
   DS18B20.requestTemperatures();       
   tempC = DS18B20.getTempCByIndex(0);  
   tempF = tempC * 9 / 5 + 32;
-  offsetdegrees(30);
-  offsettext(40,2);
+  offsetdegrees(40);
+  offsettext(60);
   tft.setTextPadding(100);
-  tft.drawFloat(tempC, 2, 40, 37);
+  tft.drawFloat(tempC, 2, 40, 47);
   //tft.print(tempC);
-  tft.setCursor(110, 50);
+  tft.setCursor(130, 60);
   tft.println(" C");
-  offsetdegrees(60);
-  offsettext(70,2);
+  offsetdegrees(80);
+  offsettext(100);
   tft.setTextPadding(100);
-  tft.drawFloat(tempF, 2, 40, 77);
-  tft.setCursor(110, 80);
+  tft.drawFloat(tempF, 2, 40, 87);
+  tft.setCursor(130, 100);
   tft.println(" F");
   delay(200);
 }
@@ -209,19 +203,19 @@ void credits(void) {
     tft.fillScreen(ILI9341_BLACK);
     cred = 0;
   }
-  offsettext(10,3);
+  offsettext(20);
   tft.println("Credits");
   tft.println();
-  offsettext(30,2);
+  offsettext(60);
   tft.println("Group Members:");
-  offsettext(60,2);
-  tft.println("Andy,Jia Woei,Jing Hui,");
-  offsettext(90,2);
+  offsettext(100);
+  tft.println("Andy, Jia Woei, Jing Hui,");
+  offsettext(140);
   tft.println("Chermaine and Charissa");
   tft.println();
-  offsettext(120,2);
+  offsettext(180);
   tft.println("With thanks to Tony");
-  offsettext(150,2);
+  offsettext(220);
   tft.println("and Qi Jie");
 }
 
@@ -231,15 +225,15 @@ void techsupport(void){
     tft.fillScreen(ILI9341_BLACK);
     tech = 0;
   }
-  offsettext(10,3);
+  offsettext(20);
   tft.println("Tech Support");
-  offsettext(40,2);
+  offsettext(60);
   tft.println("Email Address:");
-  offsettext(70,2);
+  offsettext(100);
   tft.println("planbee9555@gmail.com");
 }
 
-void offsettext(int y, int font){
+void offsettext(int y){
   /*
    * Function: offsettext
    * ----------------
@@ -263,9 +257,8 @@ void offsetdegrees(int y){
    * y: y-axis value to be input for the degrees symbol
    * 
    */
-  tft.setCursor(100, y);
+  tft.setCursor(120, y);
   tft.setTextColor(TFT_YELLOW);
-  //tft.setTextSize(1);
   tft.println("o");
 }
 

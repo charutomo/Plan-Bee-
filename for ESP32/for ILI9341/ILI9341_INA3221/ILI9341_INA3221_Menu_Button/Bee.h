@@ -2,7 +2,7 @@
 #define BEE_HEIGHT  240
 
 #ifdef LOAD_GFXFF
-  #define FF33 &FreeSerif9pt7b
+  #define FF33 &FreeSerif12pt7b   //&FreeSerif9pt7b
   #define GFXFF 1
 #endif
 
