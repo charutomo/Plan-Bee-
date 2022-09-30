@@ -106,8 +106,8 @@ void showbattery(void) {
   float voltage[3];
 
   int index = numloop%10;
-  current1 = ina3221.getCurrent(INA3221_CH1);
-  voltage1 = ina3221.getVoltage(INA3221_CH1);
+  currentarray1[index] = ina3221.getCurrent(INA3221_CH1);
+  voltagearray1[index] = ina3221.getVoltage(INA3221_CH1);
   numloop++;
   if (numloop<10){
       current1 = avgvalue(currentarray1,numloop);
@@ -200,7 +200,7 @@ void showtemp(void) {
   tft.drawFloat(tempF, 2, 40, 77);
   tft.setCursor(110, 80);
   tft.println(" F");
-  delay(300);
+  delay(200);
 }
 
 // show the credits
