@@ -53,8 +53,14 @@ void setup() {
   DS18B20.begin();
   tft.fillScreen(ILI9341_WHITE);
   tft.setRotation(3);
-//  tft.drawBitmap(0, 0, Plan_Bee_Logo_ALIVE, BEE_WIDTH,BEE_HEIGHT);
+  int x = random(tft.width()  - BEE_WIDTH);
+  int y = random(tft.height() - BEE_HEIGHT);
+  //draw the bee logo
+  tft.drawXBitmap(x, y, bee_logo, BEE_WIDTH,BEE_HEIGHT,TFT_BLACK); 
+  //using the drawXBitmap function, bee_logo is in the header folder, Bee.h
   tft.setFreeFont(FF33);
+  //custom page ro show the name of the owner of the power bank and datetime
+  showcustom();
   
   // initialise INA3221
   ina3221.begin();
@@ -94,6 +100,12 @@ void ifClick(void){
     batt = 1;
     temp = 1;
     }
+}
+
+void showcustom(void){
+  tft.fillScreen(ILI9341_BLACK);
+  offsettext(40);
+  tft.println("Hello Name!");  
 }
 
 // show the battery value

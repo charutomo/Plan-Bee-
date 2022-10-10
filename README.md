@@ -124,6 +124,7 @@ These are libraries imported:
 ### Display Screen
 * [Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)
 * [Adafruit ILI9341](https://github.com/adafruit/Adafruit_ILI9341)
+* [TFT_eSPI](https://github.com/Bodmer/TFT_eSPI)
 * [ESP32-SH1106-OLED](https://github.com/nhatuan84/esp32-sh1106-oled)
 * [Modified Libraries](https://github.com/charutomo/Plan-Bee-/tree/main/modified%20libraries/)
 
