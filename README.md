@@ -128,11 +128,15 @@ These are libraries imported:
 * [ESP32-SH1106-OLED](https://github.com/nhatuan84/esp32-sh1106-oled)
 * [Modified Libraries](https://github.com/charutomo/Plan-Bee-/tree/main/modified%20libraries/)
 
+### Datetime
+* [NTPClient](https://github.com/barsrb/NTPClient)
+
 ### Temperature Sensor
 * [DallasTemperature](https://github.com/vlast3k/Arduino-libraries/tree/master/DallasTemperature)
 
 ### Encoder
 * [Ai Esp32 Rotary Encoder](https://github.com/igorantolic/ai-esp32-rotary-encoder)
+
 
 <br>
 
