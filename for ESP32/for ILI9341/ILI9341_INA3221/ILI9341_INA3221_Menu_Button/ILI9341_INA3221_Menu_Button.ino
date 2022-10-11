@@ -7,6 +7,9 @@
 #include <SPI.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include <WiFi.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 
 #define TFT_SCLK 32
 #define TFT_MOSI 33
@@ -46,18 +49,25 @@ int cred = 1;
 int tech = 1;
 int numloop = 0;
 unsigned long drawTime = 0;
+// Replace with your network credentials
+const char* ssid     = "SSID";
+const char* password = "Password";
+String formattedTime;
 
 Beastdevices_INA3221 ina3221(INA3221_ADDR40_GND); 
 
 OneWire oneWire(SENSOR_PIN);
 DallasTemperature DS18B20(&oneWire);
 TFT_eSPI tft = TFT_eSPI(); 
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP);
 
 void setup() {
   Serial.begin(115200);
   // initialise the screen
   tft.begin();
   DS18B20.begin();
+  datetimeConnect();
   tft.fillScreen(ILI9341_WHITE);
   //tft.setRotation(3);
   int x = random(tft.width()  - BEE_WIDTH);
@@ -69,8 +79,7 @@ void setup() {
   tft.setFreeFont(FF33);
   //custom page ro show the name of the owner of the power bank and datetime
   showcustom();
-  delay(1000);
-  
+  delay(2000);
   // initialise INA3221
   ina3221.begin();
   ina3221.reset();
@@ -115,10 +124,42 @@ void ifClick(void){
     }
 }
 
+void datetimeConnect(void){
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  // Print local IP address and start web server
+  Serial.println("");
+  Serial.println("WiFi connected.");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+
+// Initialize a NTPClient to get time
+  timeClient.begin();
+  // Set offset time in seconds to adjust for your timezone, for example:
+  // GMT +1 = 3600
+  // GMT +8 = 28800
+  // GMT -1 = -3600
+  // GMT 0 = 0
+  timeClient.setTimeOffset(28800);
+}
+
 void showcustom(void){
   tft.fillScreen(ILI9341_BLACK);
   offsettext(40);
   tft.println("Hello Name!");  
+  while(!timeClient.update()) {
+    timeClient.forceUpdate();
+  }
+  formattedTime = timeClient.getFormattedTime();
+  Serial.println(formattedTime);
+  offsettext(160);
+  tft.print("Time Now - ");
+  tft.print(formattedTime);
 }
 
 // show the battery value
