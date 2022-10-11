@@ -25,11 +25,18 @@ float voltage1;
 float power1;
 float battery1;
 float energy1;
+float current2;
+float voltage2;
+float power2;
+float energy2;
 float tempC; 
 float tempF;
 float currentarray1[10];
 float voltagearray1[10];
 float powerarray1[10];
+float currentarray2[10];
+float voltagearray2[10];
+float powerarray2[10];
 int clicknum;
 int lastState = HIGH;
 int currentState;
@@ -52,15 +59,17 @@ void setup() {
   tft.begin();
   DS18B20.begin();
   tft.fillScreen(ILI9341_WHITE);
-  tft.setRotation(3);
+  //tft.setRotation(3);
   int x = random(tft.width()  - BEE_WIDTH);
   int y = random(tft.height() - BEE_HEIGHT);
   //draw the bee logo
-  tft.drawXBitmap(x, y, bee_logo, BEE_WIDTH,BEE_HEIGHT,TFT_BLACK); 
+  tft.drawXBitmap(x, y, bee_logo, BEE_WIDTH,BEE_HEIGHT,TFT_BLACK,TFT_WHITE); 
+  delay(1000);
   //using the drawXBitmap function, bee_logo is in the header folder, Bee.h
   tft.setFreeFont(FF33);
   //custom page ro show the name of the owner of the power bank and datetime
   showcustom();
+  delay(1000);
   
   // initialise INA3221
   ina3221.begin();
@@ -80,12 +89,15 @@ void loop() {
       showbattery();
       break;
     case 1:
-      showtemp();
+      showoutput();
       break;
     case 2:
-      credits();
+      showtemp();
       break;
     case 3:
+      credits();
+      break;
+    case 4:
       techsupport();
       break;
   }
@@ -99,6 +111,7 @@ void ifClick(void){
     tech = 1;
     batt = 1;
     temp = 1;
+    Serial.print(clicknum);
     }
 }
 
@@ -178,6 +191,67 @@ void showbattery(void) {
   }
 }
 
+// show the voltage, current, power and energy of output
+void showoutput(){
+  if (batt ==1){
+    tft.fillScreen(ILI9341_BLACK);
+    batt = 0;
+  }
+  float current[3];
+  float voltage[3];
+
+  int index = numloop%10;
+  currentarray2[index] = ina3221.getCurrent(INA3221_CH2);
+  voltagearray2[index] = ina3221.getVoltage(INA3221_CH2);
+  numloop++;
+  if (numloop<10){
+      current2 = avgvalue(currentarray2,numloop);
+      voltage2 = avgvalue(voltagearray2,numloop);
+      power2 = avgvalue(powerarr(currentarray2,voltagearray2),numloop);
+      energy2 = energy(powerarr(currentarray2,voltagearray2));
+  }
+  else{
+      current2 = avgvalue(currentarray2,10);
+      voltage2 = avgvalue(voltagearray2,10);
+      power2 = avgvalue(powerarr(currentarray2,voltagearray2),10);
+      energy2 = energy(powerarr(currentarray2,voltagearray2));
+  }
+  if (numloop%10 == 0){
+    tft.setRotation(0);
+    offsettext(20);
+    tft.println("Output Values");
+    
+    offsettext(60);
+    tft.print("Current:");
+    tft.setTextPadding(100);
+    tft.drawFloat(current2, 3, 150, 47);
+    tft.setCursor(230, 60);
+    tft.println("A");
+    
+    offsettext(100);
+    tft.print("Voltage:");
+    tft.setTextPadding(100);
+    tft.drawFloat(voltage2, 3, 150, 83);
+    tft.setCursor(230, 100);
+    tft.print("V");
+    
+    offsettext(140);
+    tft.print("Power:");
+    tft.setTextPadding(100);
+    tft.drawFloat(power2, 3, 150, 129);
+    tft.setCursor(230, 140);
+    tft.println("W");
+  
+    offsettext(180);
+    tft.print("Energy:");
+    tft.setTextPadding(100);
+    tft.drawFloat(energy2, 3, 150, 167);
+    tft.setCursor(230, 180);
+    tft.println("Ws");
+  }
+}
+
+
 // show the temperature
 void showtemp(void) {
   if (temp ==1){
@@ -200,11 +274,11 @@ void showtemp(void) {
   //tft.print(tempC);
   tft.setCursor(130, 60);
   tft.println(" C");
-  offsetdegrees(80);
-  offsettext(100);
+  offsetdegrees(100);
+  offsettext(120);
   tft.setTextPadding(100);
-  tft.drawFloat(tempF, 2, 40, 87);
-  tft.setCursor(130, 100);
+  tft.drawFloat(tempF, 2, 40, 107);
+  tft.setCursor(130, 120);
   tft.println(" F");
   delay(200);
 }
