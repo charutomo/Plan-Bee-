@@ -90,7 +90,7 @@ void setup() {
 
 void loop() {
   currentState = digitalRead(BUTTON_PIN);
-  int index = clicknum%4;
+  int index = clicknum%5;
   ifClick();
   Serial.println(currentState);
   switch(index){
