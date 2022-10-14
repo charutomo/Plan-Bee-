@@ -31,6 +31,10 @@ float energy1;
 float current2;
 float voltage2;
 float power2;
+float energy3;
+float current3;
+float voltage3;
+float power3;
 float energy2;
 float tempC; 
 float tempF;
@@ -40,6 +44,9 @@ float powerarray1[10];
 float currentarray2[10];
 float voltagearray2[10];
 float powerarray2[10];
+float currentarray3[10];
+float voltagearray3[10];
+float powerarray3[10];
 int clicknum;
 int lastState = HIGH;
 int currentState;
@@ -50,7 +57,9 @@ int tech = 1;
 int numloop = 0;
 unsigned long drawTime = 0;
 // Replace with your network credentials
+const char* ssid     = "SSID";
 const char* password = "Password";
+char *dayarray[]= {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
 Beastdevices_INA3221 ina3221(INA3221_ADDR40_GND); 
 
@@ -62,22 +71,26 @@ NTPClient timeClient(ntpUDP);
 
 void setup() {
   Serial.begin(115200);
+  
   // initialise the screen
   tft.begin();
-  DS18B20.begin();
-  datetimeConnect();
   tft.fillScreen(ILI9341_WHITE);
-  //tft.setRotation(3);
+  tft.setFreeFont(FF33);
+  DS18B20.begin();
+
+  //draw the bee logo
   int x = random(tft.width()  - BEE_WIDTH);
   int y = random(tft.height() - BEE_HEIGHT);
-  //draw the bee logo
-  tft.drawXBitmap(x, y, bee_logo, BEE_WIDTH,BEE_HEIGHT,TFT_BLACK,TFT_WHITE); 
-  delay(1000);
   //using the drawXBitmap function, bee_logo is in the header folder, Bee.h
-  tft.setFreeFont(FF33);
+  tft.drawXBitmap(x, y, bee_logo, BEE_WIDTH,BEE_HEIGHT,TFT_BLACK,TFT_WHITE); // monochrome, white background
+  delay(1000);
+
+  // initialise the NTPClient
+  datetimeConnect();
   //custom page ro show the name of the owner of the power bank and datetime
   showcustom();
-  delay(2000);
+  delay(2500);
+  
   // initialise INA3221
   ina3221.begin();
   ina3221.reset();
@@ -88,7 +101,7 @@ void setup() {
 
 void loop() {
   currentState = digitalRead(BUTTON_PIN);
-  int index = clicknum%5;
+  int index = clicknum%6;
   ifClick();
   Serial.println(currentState);
   switch(index){
@@ -96,15 +109,18 @@ void loop() {
       showbattery();
       break;
     case 1:
-      showoutput();
+      showinput();
       break;
     case 2:
-      showtemp();
+      showoutput();
       break;
     case 3:
-      credits();
+      showtemp();
       break;
     case 4:
+      credits();
+      break;
+    case 5:
       techsupport();
       break;
   }
@@ -136,14 +152,14 @@ void datetimeConnect(void){
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 
-// Initialize a NTPClient to get time
+  // Initialize a NTPClient to get time
   timeClient.begin();
   // Set offset time in seconds to adjust for your timezone, for example:
   // GMT +1 = 3600
   // GMT +8 = 28800
   // GMT -1 = -3600
   // GMT 0 = 0
-  timeClient.setTimeOffset(28800);
+  timeClient.setTimeOffset(28800); // SGT is GMT+8
 }
 
 void showcustom(void){
@@ -157,14 +173,14 @@ void showcustom(void){
   offsettext(120);
   tft.print("Date - ");
   tft.print(timeClient.getDay());
-  tft.print("/ ");
+  tft.print(" / ");
   tft.print(timeClient.getMonth());
-  tft.print("/ ");
+  tft.print(" / ");
   tft.print(timeClient.getYear());
   
   offsettext(150);
   tft.print("Day - ");
-  tft.print(dayarray[timeClient.getDayOfWeek()]);
+  tft.print(dayarray[timeClient.getDayOfWeek()-1]);
   
   offsettext(180);
   tft.print("Time Now - ");
@@ -177,9 +193,6 @@ void showbattery(void) {
     tft.fillScreen(ILI9341_BLACK);
     batt = 0;
   }
-  float current[3];
-  float voltage[3];
-
   int index = numloop%10;
   currentarray1[index] = ina3221.getCurrent(INA3221_CH1);
   voltagearray1[index] = ina3221.getVoltage(INA3221_CH1);
@@ -241,15 +254,12 @@ void showbattery(void) {
   }
 }
 
-// show the voltage, current, power and energy of output
-void showoutput(){
+// show the voltage, current, power and energy of input
+void showinput(){
   if (batt ==1){
     tft.fillScreen(ILI9341_BLACK);
     batt = 0;
   }
-  float current[3];
-  float voltage[3];
-
   int index = numloop%10;
   currentarray2[index] = ina3221.getCurrent(INA3221_CH2);
   voltagearray2[index] = ina3221.getVoltage(INA3221_CH2);
@@ -269,7 +279,7 @@ void showoutput(){
   if (numloop%10 == 0){
     tft.setRotation(0);
     offsettext(20);
-    tft.println("Output Values");
+    tft.println("Input Values");
     
     offsettext(60);
     tft.print("Current:");
@@ -296,6 +306,63 @@ void showoutput(){
     tft.print("Energy:");
     tft.setTextPadding(100);
     tft.drawFloat(energy2, 3, 150, 167);
+    tft.setCursor(230, 180);
+    tft.println("Ws");
+  }
+}
+
+// show the voltage, current, power and energy of output
+void showoutput(){
+  if (batt ==1){
+    tft.fillScreen(ILI9341_BLACK);
+    batt = 0;
+  }
+  int index = numloop%10;
+  currentarray3[index] = ina3221.getCurrent(INA3221_CH3);
+  voltagearray3[index] = ina3221.getVoltage(INA3221_CH3);
+  numloop++;
+  if (numloop<10){
+      current3 = avgvalue(currentarray3,numloop);
+      voltage3 = avgvalue(voltagearray3,numloop);
+      power3 = avgvalue(powerarr(currentarray3,voltagearray3),numloop);
+      energy3 = energy(powerarr(currentarray3,voltagearray3));
+  }
+  else{
+      current3 = avgvalue(currentarray3,10);
+      voltage3 = avgvalue(voltagearray3,10);
+      power3 = avgvalue(powerarr(currentarray3,voltagearray3),10);
+      energy3 = energy(powerarr(currentarray3,voltagearray3));
+  }
+  if (numloop%10 == 0){
+    tft.setRotation(0);
+    offsettext(20);
+    tft.println("Output Values");
+    
+    offsettext(60);
+    tft.print("Current:");
+    tft.setTextPadding(100);
+    tft.drawFloat(current3, 3, 150, 47);
+    tft.setCursor(230, 60);
+    tft.println("A");
+    
+    offsettext(100);
+    tft.print("Voltage:");
+    tft.setTextPadding(100);
+    tft.drawFloat(voltage3, 3, 150, 83);
+    tft.setCursor(230, 100);
+    tft.print("V");
+    
+    offsettext(140);
+    tft.print("Power:");
+    tft.setTextPadding(100);
+    tft.drawFloat(power3, 3, 150, 129);
+    tft.setCursor(230, 140);
+    tft.println("W");
+  
+    offsettext(180);
+    tft.print("Energy:");
+    tft.setTextPadding(100);
+    tft.drawFloat(energy3, 3, 150, 167);
     tft.setCursor(230, 180);
     tft.println("Ws");
   }
