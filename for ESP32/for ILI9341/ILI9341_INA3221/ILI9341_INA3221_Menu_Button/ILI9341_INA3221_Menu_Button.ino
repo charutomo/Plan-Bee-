@@ -14,7 +14,7 @@
 #define TFT_SCLK 32
 #define TFT_MOSI 33
 #define TFT_MISO 12
-#define TFT_CS 27
+#define TFT_CS   27
 #define TFT_DC 26
 #define TFT_RST 25
 #define PRINT_DEC_POINTS  3  
@@ -50,9 +50,7 @@ int tech = 1;
 int numloop = 0;
 unsigned long drawTime = 0;
 // Replace with your network credentials
-const char* ssid     = "SSID";
 const char* password = "Password";
-String formattedTime;
 
 Beastdevices_INA3221 ina3221(INA3221_ADDR40_GND); 
 
@@ -155,11 +153,22 @@ void showcustom(void){
   while(!timeClient.update()) {
     timeClient.forceUpdate();
   }
-  formattedTime = timeClient.getFormattedTime();
-  Serial.println(formattedTime);
-  offsettext(160);
+
+  offsettext(120);
+  tft.print("Date - ");
+  tft.print(timeClient.getDay());
+  tft.print("/ ");
+  tft.print(timeClient.getMonth());
+  tft.print("/ ");
+  tft.print(timeClient.getYear());
+  
+  offsettext(150);
+  tft.print("Day - ");
+  tft.print(dayarray[timeClient.getDayOfWeek()]);
+  
+  offsettext(180);
   tft.print("Time Now - ");
-  tft.print(formattedTime);
+  tft.print(timeClient.getFormattedTime());
 }
 
 // show the battery value
