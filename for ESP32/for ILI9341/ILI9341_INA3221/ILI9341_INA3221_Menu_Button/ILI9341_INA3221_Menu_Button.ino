@@ -10,6 +10,7 @@
 #include <WiFi.h>
 #include <NTPClient.h>
 #include <WiFiUdp.h>
+#include <ESP32Time.h>
 
 #define TFT_SCLK 32
 #define TFT_MOSI 33
@@ -68,6 +69,7 @@ DallasTemperature DS18B20(&oneWire);
 TFT_eSPI tft = TFT_eSPI(); 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP);
+ESP32Time rtc(28800);
 
 void setup() {
   Serial.begin(115200);
@@ -86,7 +88,7 @@ void setup() {
   delay(1000);
 
   // initialise the NTPClient
-  datetimeConnect();
+  //datetimeConnect();
   //custom page ro show the name of the owner of the power bank and datetime
   showcustom();
   delay(2500);
@@ -166,25 +168,38 @@ void showcustom(void){
   tft.fillScreen(ILI9341_BLACK);
   offsettext(40);
   tft.println("Hello Name!");  
-  while(!timeClient.update()) {
-    timeClient.forceUpdate();
-  }
 
+  //using library ESP32Time
+  rtc.setTime(30, 24, 15, 17, 1, 2042);
   offsettext(120);
   tft.print("Date - ");
-  tft.print(timeClient.getDay());
-  tft.print(" / ");
-  tft.print(timeClient.getMonth());
-  tft.print(" / ");
-  tft.print(timeClient.getYear());
+  tft.print(rtc.getDate(true));
   
   offsettext(150);
-  tft.print("Day - ");
-  tft.print(dayarray[timeClient.getDayOfWeek()-1]);
-  
-  offsettext(180);
   tft.print("Time Now - ");
-  tft.print(timeClient.getFormattedTime());
+  tft.print(rtc.getTime());
+
+
+  //for NTPClient
+//  while(!timeClient.update()) {
+//    timeClient.forceUpdate();
+//  }
+//
+//  offsettext(120);
+//  tft.print("Date - ");
+//  tft.print(timeClient.getDay());
+//  tft.print(" / ");
+//  tft.print(timeClient.getMonth());
+//  tft.print(" / ");
+//  tft.print(timeClient.getYear());
+//  
+//  offsettext(150);
+//  tft.print("Day - ");
+//  tft.print(dayarray[timeClient.getDayOfWeek()-1]);
+//  
+//  offsettext(180);
+//  tft.print("Time Now - ");
+//  tft.print(timeClient.getFormattedTime());
 }
 
 // show the battery value
