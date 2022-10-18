@@ -55,6 +55,7 @@ int batt = 1;
 int temp = 1;
 int cred = 1;
 int tech = 1;
+int cust = 1;
 int numloop = 0;
 unsigned long drawTime = 0;
 // Replace with your network credentials
@@ -69,7 +70,7 @@ DallasTemperature DS18B20(&oneWire);
 TFT_eSPI tft = TFT_eSPI(); 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP);
-ESP32Time rtc(28800);
+ESP32Time rtc(0);
 
 void setup() {
   Serial.begin(115200);
@@ -88,10 +89,9 @@ void setup() {
   delay(1000);
 
   // initialise the NTPClient
-  //datetimeConnect();
+  //wifiConnect();
   //custom page ro show the name of the owner of the power bank and datetime
-  showcustom();
-  delay(2500);
+  rtc.setTime(00, 40, 16, 18, 10, 2022);
   
   // initialise INA3221
   ina3221.begin();
@@ -103,28 +103,32 @@ void setup() {
 
 void loop() {
   currentState = digitalRead(BUTTON_PIN);
-  int index = clicknum%6;
+  int index = clicknum%7;
   ifClick();
   Serial.println(currentState);
   switch(index){
     case 0:
-      showbattery();
+      showcustom();
       break;
     case 1:
-      showinput();
+      showbattery();
       break;
     case 2:
-      showoutput();
+      showinput();
       break;
     case 3:
-      showtemp();
+      showoutput();
       break;
     case 4:
-      credits();
+      showtemp();
       break;
     case 5:
+      credits();
+      break;
+    case 6:
       techsupport();
       break;
+    
   }
   lastState = currentState;
 }
@@ -136,11 +140,12 @@ void ifClick(void){
     tech = 1;
     batt = 1;
     temp = 1;
+    cust = 1;
     Serial.print(clicknum);
     }
 }
 
-void datetimeConnect(void){
+void wifiConnect(void){
   Serial.print("Connecting to ");
   Serial.println(ssid);
   WiFi.begin(ssid, password);
@@ -155,30 +160,32 @@ void datetimeConnect(void){
   Serial.println(WiFi.localIP());
 
   // Initialize a NTPClient to get time
-  timeClient.begin();
+//  timeClient.begin();
   // Set offset time in seconds to adjust for your timezone, for example:
   // GMT +1 = 3600
   // GMT +8 = 28800
   // GMT -1 = -3600
   // GMT 0 = 0
-  timeClient.setTimeOffset(28800); // SGT is GMT+8
+//  timeClient.setTimeOffset(0); 
 }
 
 void showcustom(void){
-  tft.fillScreen(ILI9341_BLACK);
+  if (cust ==1){
+    tft.fillScreen(ILI9341_BLACK);
+    cust = 0;
+  }
   offsettext(40);
   tft.println("Hello Name!");  
 
   //using library ESP32Time
-  rtc.setTime(30, 24, 15, 17, 1, 2042);
   offsettext(120);
-  tft.print("Date - ");
+  tft.setTextPadding(100);
   tft.print(rtc.getDate(true));
   
   offsettext(150);
   tft.print("Time Now - ");
-  tft.print(rtc.getTime());
-
+  tft.setTextPadding(100);
+  tft.drawString(rtc.getTime(),160,137);
 
   //for NTPClient
 //  while(!timeClient.update()) {

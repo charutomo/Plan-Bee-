@@ -130,6 +130,7 @@ These are libraries imported:
 
 ### Datetime
 * [NTPClient](https://github.com/barsrb/NTPClient)
+* [ESP32Time](https://github.com/fbiego/ESP32Time)
 
 ### Temperature Sensor
 * [DallasTemperature](https://github.com/vlast3k/Arduino-libraries/tree/master/DallasTemperature)
